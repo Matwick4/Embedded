@@ -1,6 +1,6 @@
-#ifndef PONG.H_
-#define PONG.H_
-
+#ifndef _PONG_H_
+#define _PONG_H_
+#include <stdbool.h>
 typedef struct ball_s {
 
 	int x, y; //position on the screen 
@@ -16,5 +16,6 @@ typedef struct paddle {
 
 } paddle_t;
 
+bool pong();
 
 #endif

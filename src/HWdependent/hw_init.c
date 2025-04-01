@@ -41,6 +41,7 @@ void hwInit()
 
 void HW_Init()
 {
+    
 }
 
 void graphic_init()

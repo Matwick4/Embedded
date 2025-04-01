@@ -17,7 +17,7 @@ typedef struct paddle {
 } paddle_t;
 
 bool pong();
-static void init();
+//static void init(); Maybe not necessary
 int score_check();
 int collision_check(ball_t, paddle_t);
 static void move_ball();

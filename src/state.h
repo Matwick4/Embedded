@@ -20,7 +20,7 @@ typedef enum
     AUTO
 } brightnessType;
 */
-struct GameState
+typedef struct 
 {
     int game_selected;
     bool buttonClicked;
@@ -29,10 +29,10 @@ struct GameState
     uint16_t joystickY;
 
 
-    //Graphics_Context gContext;
+    Graphics_Context gContext;
     //brightnessType brightness;
     
-};
+}GameState;
 
 GameState gameState;
 

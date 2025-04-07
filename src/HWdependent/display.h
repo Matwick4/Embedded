@@ -1,11 +1,11 @@
-#include <stdbool.h>
-#include <cstdint>
-//TODO fix paths    
-//#include "../../LcdDriver/Crystalfontz128x128_ST7735.h"
-//#include <ti/grlib/grlib.h>
-
 #ifndef _DISPLAY_H_
 #define _DISPLAY_H_
+
+#include <stdbool.h>
+#include <stdint.h>
+#include "../../LcdDriver/Crystalfontz128x128_ST7735.h"
+#include <ti/grlib/grlib.h>
+
 #define DISPLAY_WIDTH LCD_HORIZONTAL_MAX
 #define DISPLAY_HEIGHT LCD_VERTICAL_MAX
 

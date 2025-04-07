@@ -1,6 +1,7 @@
-#include <stdbool.h>
 #ifndef _MENU_H_
 #define _MENU_H_
+
+#include <stdbool.h>
 
 //Show the main menu where one of the two games can be selected 
 //TODO CHECK IF TO PUT BIRGHTNESS

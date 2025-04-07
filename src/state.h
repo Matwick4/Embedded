@@ -1,8 +1,9 @@
-#include <stdbool.h>
-#include <cstdint>
-//#include "ti/grlib/grlib.h"
 #ifndef _STATE_H_
 #define _STATE_H_
+
+#include <stdbool.h>
+#include <stdint.h>
+#include "ti/grlib/grlib.h"
 
 //TODO CHECK FOR THESE ONES 
 #define J_UP_TRESH 10000

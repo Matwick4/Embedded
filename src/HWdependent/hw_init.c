@@ -1,13 +1,13 @@
 #include "hw_init.h"
-/*      TODO FIX PATHS !!!!!!   
+#include "../state.h"
 #include "../../LcdDriver/Crystalfontz128x128_ST7735.h"
-#include "../../LightSensor/HAL_OPT3001.h"
-#include "../../LightSensor/HAL_I2C.h"
+//#include "../../LightSensor/HAL_OPT3001.h"
+//#include "../../LightSensor/HAL_I2C.h"
 #include <ti/devices/msp432p4xx/inc/msp432p401r.h>
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 #include <ti/devices/msp432p4xx/driverlib/flash.h>
 #include <ti/grlib/grlib.h>
-*/
+
 
 void hwInit()
 {

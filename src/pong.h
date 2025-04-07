@@ -1,5 +1,6 @@
 #ifndef _PONG_H_
 #define _PONG_H_
+
 #include <stdbool.h>
 typedef struct ball_s {
 

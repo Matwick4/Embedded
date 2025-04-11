@@ -17,15 +17,25 @@ typedef struct paddle {
 
 } paddle_t;
 
+//Pong game
 bool pong();
-//static void init(); Maybe not necessary
+//Initialize starting pos of ball and paddles
+static void init(); 
+//Check score of players
 int score_check();
+//Check if there is a collision between ball and paddle. If return value == 1 then collision, if 0 no collision
 int collision_check(ball_t, paddle_t);
+//Move the ball 
 static void move_ball();
+//Mode paddle of first player
 static void move_paddle_first_player(int );
+//Move paddle of second player
 static void move_paddle_second_player(int);
+//Move AI paddle (if selected)
 static void move_paddle_ai();
+//Draw ball on the screen
 static void draw_ball();
+//Draw paddle on the screen
 static void draw_paddle();
 
 #endif

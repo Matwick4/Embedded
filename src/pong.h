@@ -27,8 +27,9 @@ int score_check();
 int collision_check(ball_t, paddle_t);
 //Move the ball 
 static void move_ball();
+static void change_ball_vector(int);
 //Mode paddle of first player
-static void move_paddle_first_player(int );
+static void move_paddle_first_player(int);
 //Move paddle of second player
 static void move_paddle_second_player(int);
 //Move AI paddle (if selected)

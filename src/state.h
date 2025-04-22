@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "ti/grlib/grlib.h"
+#include <ti/grlib/grlib.h>
 
 //TODO CHECK FOR THESE ONES 
 #define J_UP_TRESH 10000
@@ -21,11 +21,18 @@ typedef enum
     AUTO
 } brightnessType;
 */
+typedef enum
+{
+    STATE_MENU,
+    STATE_GAME
+
+} buttonState;
+
 typedef struct 
 {
     int game_selected;
     bool buttonClicked;
-
+    buttonState buttonstate;
     uint16_t joystickX;
     uint16_t joystickY;
 

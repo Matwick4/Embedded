@@ -82,19 +82,72 @@ int collision_check(ball_t b, paddle_t p)
     return 1;
 }
 
-static void move_paddle_first_player(int m)
+static void move_paddle_first_player(paddle_direction_t dir)
 {
     //TODO. For the joystick part only check for movement on the y axis(theoretically)
+    //Read input from joystick in the pong.c then draw the paddle based on value dir
+    
+    if(dir == UP && paddle[0].last_dir != UP)
+    {
+        if(paddle[0].y <= 0) {
+		
+			paddle[0].y = 0;
+
+		} else {
+		
+			paddle[0].y -= 2; // TODO check if correct
+		}
+        paddle[0].last_dir = UP;
+    }
+    else if(dir == DOWN && paddle[0].last_dir != DOWN)
+    {
+        if(paddle[0].y >= DISPLAY_HEIGHT - paddle[0].h) {
+		
+			paddle[0].y = DISPLAY_HEIGHT - paddle[0].h;
+		
+		} else { 
+		
+			paddle[0].y += 2;
+		}
+        paddle[0].last_dir = DOWN;
+    }
+    draw_paddle(0);
 }
 
-static void move_paddle_second_player(int m)
+static void move_paddle_second_player(paddle_direction_t dir)
 {
-    //TODO. Need to use the othe buttons for it to work.
+    //TODO read from pong.c the button pressed then call this funct with appropriate parameter dir
+    if(dir == UP && paddle[0].last_dir != UP)
+    {
+        if(paddle[1].y <= 0) {
+		
+			paddle[1].y = 0;
+
+		} else {
+		
+			paddle[1].y -= 2; // TODO check if correct
+		}
+        paddle[1].last_dir = UP;
+    }
+    else if(dir == DOWN && paddle[1].last_dir != DOWN)
+    {
+        if(paddle[1].y >= DISPLAY_HEIGHT - paddle[1].h) {
+		
+			paddle[1].y = DISPLAY_HEIGHT - paddle[1].h;
+		
+		} else { 
+		
+			paddle[1].y += 2;
+		}
+        paddle[1].last_dir = DOWN;
+    } 
+    draw_paddle(1);
+
 }
 
 static void move_paddle_ai()
 {
-    int c = paddle[0].y + paddle[0].h /2;
+    int c = paddle[1].y + paddle[1].h /2;
     int screen_c = DISPLAY_HEIGHT/2;
     int ball_speed = abs(ball.dy);
 
@@ -104,11 +157,11 @@ static void move_paddle_ai()
     {
         if(c < screen_c)
         {
-            paddle[0].y += ball_speed;
+            paddle[1].y += ball_speed;
         }
         else
         {
-            paddle[0].y -= ball_speed;
+            paddle[1].y -= ball_speed;
         }
     }
     //Case of ball moving to the left
@@ -119,11 +172,11 @@ static void move_paddle_ai()
         {
             if (ball.y > c) { 
 				
-				paddle[0].y += ball_speed;
+				paddle[1].y += ball_speed;
 
 			} else { 
 			
-				paddle[0].y -= ball_speed;
+				paddle[1].y -= ball_speed;
 			} 
         }
         //The ball is moving down //TODO check if correct
@@ -133,11 +186,11 @@ static void move_paddle_ai()
 		
                 if (ball.y < center) { 
                     
-                    paddle[0].y -= ball_speed;
+                    paddle[1].y -= ball_speed;
                 
                 } else {
                 
-                    paddle[0].y += ball_speed;
+                    paddle[1].y += ball_speed;
                 }
             }
         }
@@ -146,11 +199,11 @@ static void move_paddle_ai()
         {
             if (ball.y < c) { 
 			
-				paddle[0].y -= 2;
+				paddle[1].y -= 2;
 
 			} else {
 			
-				paddle[0].y += 2;
+				paddle[1].y += 2;
 			}
         }
     }
@@ -274,12 +327,12 @@ static void change_ball_vector(int k){
 }
 static void draw_ball()
 {
-
+    //TODO draw the ball using the ball fields
 }
 
-static void draw_paddle()
+static void draw_paddle(int paddle)
 {
-
+    //TODO draw the paddle based on paddle index to identify the right paddle
 }
 
 bool pong(){

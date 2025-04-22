@@ -10,12 +10,21 @@ typedef struct ball_s {
 
 } ball_t;
 
-typedef struct paddle {
+typedef struct paddle_s {
 
 	int x,y; // position on the screen
 	int w,h; // paddle width and height
+	paddle_direction_t last_dir;
 
 } paddle_t;
+
+
+typedef enum paddle_direction_e {
+
+	UP, // paddle up
+	DOWN // paddle down
+
+} paddle_direction_t;
 
 //Pong game
 bool pong();
@@ -29,9 +38,9 @@ int collision_check(ball_t, paddle_t);
 static void move_ball();
 static void change_ball_vector(int);
 //Mode paddle of first player
-static void move_paddle_first_player(int);
+static void move_paddle_first_player(paddle_direction_t);
 //Move paddle of second player
-static void move_paddle_second_player(int);
+static void move_paddle_second_player(paddle_direction_t);
 //Move AI paddle (if selected)
 static void move_paddle_ai();
 //Draw ball on the screen

@@ -43,9 +43,11 @@ void set_Foreground_Color(uint32_t color);
 //then sets it as background
 void set_Background_Color(uint32_t color);
 
-//Paints rectanlge on the screen (only the border)
+//Paints rectangle on the screen (only the border)
 void draw_Rectangle(const Graphics_Rectangle *rectangle);
 
+Graphics_Rectangle getBallRectangle(int x,int y);
+Graphics_Rectangle getPaddleRectangle(int x,int y);
 //Paints rectanlge on the screen (filled with fg color)
 void fill_Rectangle(const Graphics_Rectangle *rectangle);
 

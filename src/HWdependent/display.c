@@ -1,5 +1,6 @@
 #include "display.h"
 #include "../state.h"
+
 void clear_Display(){
     GrClearDisplay(&gameState.gContext);
 }
@@ -42,6 +43,28 @@ void set_Background_Color(uint32_t color){
 
 void draw_Rectangle(const Graphics_Rectangle *rectangle){
     Graphics_drawRectangle(&gameState.gContext, rectangle);
+}
+
+Graphics_Rectangle getBallRectangle(int x, int y)
+{
+    Graphics_Rectangle ball;
+    ball.xMin = x;
+    ball.xMax = x+6;
+    ball.yMin = y;
+    ball.yMin = y-6;
+
+    return ball;
+}
+
+Graphics_Rectangle getPaddleRectangle(int x, int y)
+{
+    Graphics_Rectangle paddle;
+    ball.xMin = x;
+    ball.xMax = x+10;
+    ball.yMin = y;
+    ball.yMax = y+30;
+
+    return paddle;
 }
 
 void fill_Rectangle(const Graphics_Rectangle *rectangle){

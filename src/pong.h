@@ -46,6 +46,9 @@ static void move_paddle_ai();
 //Draw ball on the screen
 static void draw_ball();
 //Draw paddle on the screen
-static void draw_paddle();
-
+static void draw_paddle(int paddle);
+//Draw menu
+static void draw_pong_menu();
+//Draw the game options (auxiliary function of the menu)
+static void draw_pong_options(int step);
 #endif

@@ -1,4 +1,5 @@
 #include "pong.h"
+#include "state.h"
 #include "HWdependent/display.h"
 #include "HWdependent/joystick.h"
 #include <stdbool.h>
@@ -10,8 +11,10 @@
 static ball_t ball;
 static paddle_t paddle[2];
 int score[] = {0,0};
-
-
+static bool AI = false;
+const char *const gameOptions[] = {"PvE","PvP"};
+const int lengthOpt = 2;
+const int offsetOpt = 60;
 
 static void init()
 {
@@ -328,14 +331,86 @@ static void change_ball_vector(int k){
 static void draw_ball()
 {
     //TODO draw the ball using the ball fields
+
+    Graphics_Rectangle ball_rect = getRectangle(ball.x,ball.y);
+    set_Foreground_Color(GRAPHICS_COLOR_RED);
+    fill_Rectangle(&ball_rect);
+    
+    //Check if necessary to do collision check part here
 }
 
-static void draw_paddle(int paddle)
+static void draw_paddle(int paddle_index)
 {
     //TODO draw the paddle based on paddle index to identify the right paddle
+    Graphics_Rectangle paddle_rect = getRectangle(paddle[paddle_index].x,paddle[paddle_index].y);
+    set_Foreground_Color(GRAPHICS_COLOR_WHITE);
+    fill_Rectangle(&paddle_rect);
+    
+    //Check if necessary to do collision check part here
+}
+static void draw_pong_options(int step)
+{
+
+}
+static void draw_pong_menu()
+{
+    clear_Display();
+    int selected = 0;
+    int step = get_Font_Height()*2;
+
+    int prev_sel = selected;
+    gameState.buttonClicked = false;
+
+    Graphics_Rectangle prevRect;
+    prevRect.xMin = 0;
+    prevRect.xMax = 0;
+    prevRect.yMin = 0;
+    prevRect.yMax = 0;
+    
+    while(!(gameState.buttonClicked) || selected >= lengthOpt)
+    {
+        readJoystickPosition();
+
+        if(gameState.joystickY < J_DOWN_TRESH)
+        {
+            selected = min(selected+1,lengthOpt);
+            gameState.joystickY = J_DOWN_TRESH+1;
+            for(int j = 0;j<400000;j++)
+            ;
+
+        }
+        else if(gameState.joystickY > J_UP_TRESH)
+        {
+            selected = max(selected-1,0);
+            gameState.joystickY = J_UP_TRESH-1;
+            for(int j = 0;j<400000;j++)
+            ;
+        }
+    }
+
 }
 
+
 bool pong(){
+    
+
+    //Clear display, set ball and paddles
+    clear_Display();
+    init();
+    uint32_t previous_foregroundColor = get_Foreground_Color();
+
+    //Show menu (decide whether play against AI or other player) TODO
+
+    //Draw paddles and ball
+
+    draw_ball();
+    draw_paddle(0);
+    draw_paddle(1);
+
+    while()
+    {
+
+    }
 
 }
 

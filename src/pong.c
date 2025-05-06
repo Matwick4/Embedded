@@ -350,15 +350,21 @@ static void draw_paddle(int paddle_index)
 }
 static void draw_pong_options(int step)
 {
-
+    int h_w = DISPLAY_WIDTH/2;
+    int offset = offsetOpt;
+    for(int j = 0; j<lengthOpt;j++)
+    {
+        draw_String_Centered(gameOptions[i],h_w,offset,false);
+        offset+=s;
+    }
 }
 static void draw_pong_menu()
 {
     clear_Display();
-    int selected = 0;
+    int selected_curr = 0;
     int step = get_Font_Height()*2;
 
-    int prev_sel = selected;
+    int prev_sel = selected_curr;
     gameState.buttonClicked = false;
 
     Graphics_Rectangle prevRect;
@@ -373,7 +379,7 @@ static void draw_pong_menu()
 
         if(gameState.joystickY < J_DOWN_TRESH)
         {
-            selected = min(selected+1,lengthOpt);
+            selected_curr = min(selected+1,lengthOpt);
             gameState.joystickY = J_DOWN_TRESH+1;
             for(int j = 0;j<400000;j++)
             ;
@@ -381,15 +387,83 @@ static void draw_pong_menu()
         }
         else if(gameState.joystickY > J_UP_TRESH)
         {
-            selected = max(selected-1,0);
+            selected_curr = max(selected-1,0);
             gameState.joystickY = J_UP_TRESH-1;
             for(int j = 0;j<400000;j++)
-            ;
+                ;
+                
+            
+        }
+        draw_title_play_options();
+
+        if(selected_curr != prev_sel)
+        {
+            clean_rect(&prevRect);
+            prev_sel = selected_curr;
+        }
+        prevRect = draw_selection_rect(selected_curr,step);
+        draw_pong_options(step);
+
+        if(gameState.buttonClicked)
+        {
+            if(selected_curr == lengthOpt)
+            {
+                gameState.buttonClicked = false;
+            }
         }
     }
-
+    gameState.buttonClicked = false;
+    if (selected_curr == 0)
+    {
+        AI = true;
+    }
+    else
+    {
+        AI = false;
+    }
 }
 
+void draw_title_play_options()
+{
+    uint32_t prev_color = get_Foreground_Color();
+    set_Foreground_Color(GRAPHICS_COLOR_RED);
+    int w = DISPLAY_WIDTH;
+
+    const Graphics_Font *prev_font = get_Font();
+    //set_Font(titleFont);
+
+    draw_String_Centered("Choose gamemode",w/2,22,false);
+    set_Font(prev_font);
+    set_Foreground_Color_Translated(prev_color);
+}
+
+void clean_rect(const Graphics_Rectangle *rect)
+{
+    uint32_t fgCol = get_Foreground_Color();
+    set_Foreground_Color_Translated(get_Background_Color());
+    draw_Rectangle(rect);
+    set_Foreground_Color_Translated(fgCol);
+}
+
+Graphics_Rectangle draw_selection_rect(const int sel, const int s)
+{
+    const int padding = 20;
+    Graphics_Rectangle rect;
+    rect.xMax = DISPLAY_WIDTH - padding;
+    rect.xMin = padding;
+    rect.yMin = offsetOpt + sel * s - s/2 ;
+    rect.yMax = offsetOpt + sel * s + s/2 ;
+
+    if(sel == lengthOpt)
+    {
+        rect.xMax = DISPLAY_WIDTH-1;
+        rect.xMin = DISPLAY_WIDTH-20;
+        rect.yMin = DISPLAY_HEIGHT-15;
+        rect.yMax = DISPLAY_HEIGHT-2;
+    }
+    draw_Rectangle(&rect);
+    return rect;
+}   
 
 bool pong(){
     
@@ -398,19 +472,77 @@ bool pong(){
     clear_Display();
     init();
     uint32_t previous_foregroundColor = get_Foreground_Color();
+    int quit = 0;
+    int state = 1;
 
-    //Show menu (decide whether play against AI or other player) TODO
-
-    //Draw paddles and ball
-
-    draw_ball();
-    draw_paddle(0);
-    draw_paddle(1);
-
-    while()
+    while(quit == 0)
     {
+        //Show menu (decide whether play against AI or other player)
+        if(state = 1)
+        {
+            draw_pong_menu();
+            state = 2;
+        }
+        //Game
+        else if(state == 2)
+        {
+            score = score_check();
+            //Nobody has won yet; continue
+            if(score == 0)
+            {
+                //Changes based on selected AI
+                if(AI)
+                {
+                    readJoystickPosition();
+                    move_paddle_ai();
+                    move_ball();
+                    draw_paddle(1);
+                    draw_ball();
+                    if(gameState.joystickY < J_DOWN_TRESH)
+                    {
+                        move_paddle_first_player(DOWN);
+                    }
+                    else if(gameState.joystickY > J_UP_TRESH)
+                    {
+                        move_paddle_first_player(UP);
+                    }
+                    draw_paddle(0);
 
+                }
+                else
+                {
+                    readJoystickPosition();
+                    if(isButtonUpPressed())
+                    {
+                        move_paddle_second_player(UP);
+                    }
+                    else if(isButtonDownPressed())
+                    {
+                        move_paddle_second_player(DOWN);
+                    }
+                    move_ball();
+                    draw_paddle(1);
+                    draw_ball();
+                    if(gameState.joystickY < J_DOWN_TRESH)
+                    {
+                        move_paddle_first_player(DOWN);
+                    }
+                    else if(gameState.joystickY > J_UP_TRESH)
+                    {
+                        move_paddle_first_player(UP);
+                    }
+                    draw_paddle(0);
+                }
+            }
+            else{
+                state = 3;
+            }
+        }
+        //Game over TODO
+        else if(state == 3)
+        {
+
+        }
     }
-
 }
 

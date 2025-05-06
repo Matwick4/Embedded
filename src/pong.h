@@ -51,4 +51,11 @@ static void draw_paddle(int paddle);
 static void draw_pong_menu();
 //Draw the game options (auxiliary function of the menu)
 static void draw_pong_options(int step);
+//Draw title of the gamemode selection menu 
+void draw_title_play_options();
+//Clear given rectangle
+void clean_rect(const Graphics_Rectangle *rect);
+//Draw a selectable rectangle
+Graphics_Rectangle draw_selection_rect(const int,const int);
+
 #endif

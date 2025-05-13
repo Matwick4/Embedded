@@ -1,5 +1,6 @@
 #include "pong.h"
 #include "state.h"
+#include "end_game.h"
 #include "HWdependent/display.h"
 #include "HWdependent/joystick.h"
 #include <stdbool.h>
@@ -467,7 +468,6 @@ Graphics_Rectangle draw_selection_rect(const int sel, const int s)
 
 bool pong(){
     
-
     //Clear display, set ball and paddles
     clear_Display();
     init();
@@ -541,8 +541,9 @@ bool pong(){
         //Game over TODO
         else if(state == 3)
         {
-
+            quit = 1;
         }
     }
+    return score_check();
 }
 

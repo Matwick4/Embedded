@@ -56,6 +56,16 @@ Graphics_Rectangle getBallRectangle(int x, int y)
     return ball;
 }
 
+Graphics_Rectangle get_Rectangle(int x, int y)
+{
+    Graphics_Rectangle r;
+    rect.yMin = y-2;
+    rect.yMax = y+2;
+    rect.xMax = x+2;
+    rect.xMin = x-2;
+    return r;
+}
+
 Graphics_Rectangle getPaddleRectangle(int x, int y)
 {
     Graphics_Rectangle paddle;
@@ -65,6 +75,16 @@ Graphics_Rectangle getPaddleRectangle(int x, int y)
     ball.yMax = y+30;
 
     return paddle;
+}
+
+Graphics_Rectangle get_Rectangle_decoration(int x, int y)
+{
+    Graphics_Rectangle r;
+    rect.yMin = y-1;
+    rect.yMax = y+1;
+    rect.xMax = x+1;
+    rect.xMin = x-1;
+    return r;
 }
 
 void fill_Rectangle(const Graphics_Rectangle *rectangle){

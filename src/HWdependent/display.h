@@ -29,30 +29,32 @@ void set_Font(const Graphics_Font *font);
 
 //Sets foreground color
 //note: color must already have been translated for this display
-void set_Foreground_Color_Translated(uint32_t color);
+void set_Foreground_Color_Translated(uint32_t);
 
 //Sets background color
 //note: color must already have been translated for this display
-void set_Background_Color_Translated(uint32_t color);
+void set_Background_Color_Translated(uint32_t);
 
 //Translates the color to one that is right for the display,
 //then sets it as foreground
-void set_Foreground_Color(uint32_t color);
+void set_Foreground_Color(uint32_t);
 
 //Translates the color to one that is right for the display,
 //then sets it as background
-void set_Background_Color(uint32_t color);
+void set_Background_Color(uint32_t);
 
 //Paints rectangle on the screen (only the border)
 void draw_Rectangle(const Graphics_Rectangle *rectangle);
 
-Graphics_Rectangle getBallRectangle(int x,int y);
-Graphics_Rectangle getPaddleRectangle(int x,int y);
+Graphics_Rectangle getBallRectangle(int,int);
+Graphics_Rectangle get_Rectangle(int,int);
+Graphics_Rectangle getPaddleRectangle(int,int);
+Graphics_Rectangle get_Rectangle_decoration(int,int);
 //Paints rectanlge on the screen (filled with fg color)
 void fill_Rectangle(const Graphics_Rectangle *rectangle);
 
 //Draws filled circle on screen
-void fill_Circle(int x, int y, int radius);
+void fill_Circle(int,int,int);
 
 //Draws string on display, starting from given point
 void draw_String(const char *string, uint32_t x, uint32_t y, bool redrawBackground);

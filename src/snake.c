@@ -7,6 +7,7 @@
 
 #define MAX_SNAKE_LENGTH 100
 #define OPTIONAL_LEN 10
+#define SPEED 5
 
 
 inline int chooseSnakeLength()
@@ -68,5 +69,84 @@ inline int chooseSnakeLength()
 
 bool snake()
 {
+    int max_length = chooseSnakeLength();
+    clear_Display();
+    bool won = false;
+    bool alive = true;
+    gameState.buttonClicked = false;
+
+    int length_snake = 1;
+    int index_tail = 0;
+    int index_head = 0;
+    int segmY[MAX_SNAKE_LENGTH];
+    int segmX[MAX_SNAKE_LENGTH];
+
+    int Xapple = -1;
+    int Yapple = -1;
+
+    segmY[0] = DISPLAY_HEIGHT/2;
+    segmX[0] = DISPLAY_WIDTH/2;
+
+    snake_dir direction = UP;
+    snake_dir lastDir = UP;
+    bool resumed = true;
+
+    int a = 0;
+    int b = 0;
+
+    uint32_t prev_fg = get_Foreground_Color();
+
+    while(!won && alive){
+        
+        b++;
+        if(gameState.buttonClicked){
+            //Pause 
+            pause();
+            resumed = true;
+            
+            //Paint every piece of the snake after a pause
+            for(int j = 0; j<length_snake;j++)
+            {
+                int ind = (j+index_tail)%MAX_SNAKE_LENGTH;
+                set_Foreground_Color_Translated(prev_fg);
+                Graphics_Rectangle r1 = get_Rectangle(segmX[ind],segmY[ind]);
+                fill_Rectangle(&r1);
+                Graphics_Rectangle r2 = get_Rectangle_decoration(segmX[ind],segmY[ind]);
+                set_Foreground_Color_Translated(get_Background_Color());
+                draw_Rectangle(&r2);
+                set_Foreground_Color_Translated(prev_fg);
+            }
+        }
+        else{
+            readJoystickPosition();
+            //Horizontal movement
+            int left = (gameState.joystickX < J_LEFT_TRESH) ? (J_LEFT_TRESH - gameState.joystickX) : 0;
+            int right = (gameState.joystickX > J_RIGHT_TRESH) ? (gameState.joystickX - J_RIGHT_TRESH) : 0;
+            //Vertical movement
+            int down = (gameState.joystickY < J_DOWN_TRESH) ? (J_DOWN_TRESH - gameState.joystickY) : 0;
+            int up = (gameState.joystickY > J_UP_TRESH) ? (gameState.joystickY - J_UP_TRESH) : 0;
+
+            if (up > 0 || down > 0) {
+                if (right > up && right > down && lastDir != LEFT) {
+                    direction = RIGHT;
+                }
+                else if (left > up && left > down && lastDir != RIGHT) {
+                    direction = LEFT;
+                }
+                else if (up > down && lastDir != DOWN) {
+                    direction = UP;
+                }
+                else if (down >= up && lastDir != UP) {
+                    direction = DOWN;
+                }
+            }
+            else if (right > 0 && lastDir != LEFT) {
+                direction = RIGHT;
+            }
+            else if (left > 0 && lastDir != RIGHT) {
+                direction = LEFT;
+            }   
+        }
+    }
     
 }

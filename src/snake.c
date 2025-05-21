@@ -125,7 +125,6 @@ bool snake()
             //Vertical movement
             int down = (gameState.joystickY < J_DOWN_TRESH) ? (J_DOWN_TRESH - gameState.joystickY) : 0;
             int up = (gameState.joystickY > J_UP_TRESH) ? (gameState.joystickY - J_UP_TRESH) : 0;
-
             if (up > 0 || down > 0) {
                 if (right > up && right > down && lastDir != LEFT) {
                     direction = RIGHT;
@@ -145,8 +144,112 @@ bool snake()
             }
             else if (left > 0 && lastDir != RIGHT) {
                 direction = LEFT;
+            }
+            if(b == 40)
+            {
+                b = 0;
+                //Delete last player segment
+                Graphics_Rectangle last = get_Rectangle(segmX[index_tail],segmY[index_tail]);
+                uint32_t bc = get_Background_Color();
+                set_Foreground_Color_Translated(bc);
+                fill_Rectangle(&last);
+                
+                //Move player
+                int prevHead = index_head;
+                if(length_snake>1)
+                {
+                    draw_Rectangle(&get_Rectangle_decoration(segmX[index_head],segmY[index_head]));
+                }
+                index_tail+=1;
+                index_tail %= MAX_SNAKE_LENGTH;
+                index_head+=1;
+                index_head %= MAX_SNAKE_LENGTH;
+                segmY[index_head] = segmY[prevHead];
+                segmX[index_head] = segmX[prevHead];
+
+                switch(direction){
+                    case RIGHT:
+                        segmX[index_head] += SPEED;
+                        lastDir = RIGHT;
+                        break;
+                    case LEFT:
+                        segmX[index_head] -= SPEED;
+                        lastDir = LEFT;
+                        break;
+                    case DOWN:
+                        segmY[index_head] += SPEED;
+                        lastDir = DOWN;
+                        break;
+                    case UP:
+                        segmY[index_head] -= SPEED;
+                        lastDir = UP;
+                        break;
+                }
+                set_Foreground_Color_Translated(prev_fg);
+                fill_Rectangle(&get_Rectangle(segmX[index_head],segmY[index_head]));
+
+                //Look for collision with wall
+                if (segmentsY[headIndex] < 2 || segmentsY[headIndex] > DISPLAY_HEIGHT - 2 || segmentsX[headIndex] < 2 || segmentsX[headIndex] > DISPLAY_WIDTH - 2)
+                {
+                    alive = false;
+                    continue;
+                }
+
+                //Create the apple, else look for collision
+                Graphics_Rectangle apple = get_Rectangle(Xapple,Yapple);
+                if (Xapple == -1 || resumed)
+                {
+                    if(Xapple == -1){
+                            
+                            bool valid;
+                            while (!valid)
+                            {
+                                valid = true;
+                                //New apple position
+                                Xapple = rand() % (DISPLAY_WIDTH - 4) + 2;
+                                Yapple = rand() % (DISPLAY_HEIGHT - 4) + 2;
+                                apple = getRectangle(Xapple, Yapple);
+
+                                //Check for overlap
+                                for (int j = 0; j < length_snake; j++)
+                                {
+                                    int i = (tailIndex + j) % MAX_SNAKE_LENGTH;
+                                    Graphics_Rectangle segment = getRectangle(segmX[i], segmY[i]);
+
+                                    if (isOverlapping(&apple, &segment))
+                                    {
+                                        valid = false;
+                                        break;
+                                    }
+                                }
+                            }
+                    }
+                    set_Foreground_Color(GRAPHICS_COLOR_GREEN);
+                    fill_Rectangle(&apple);
+                }
+                Graphics_Rectangle head = get_Rectangle(segmX[index_head],segmY[index_head]);
+                bool overlaps = is_Overlapping(&apple,&head);
+                if(overlaps){
+                    //Apple is eaten
+                    Xapple = -1;
+                    uint32_t bc = get_Background_Color();
+                    set_Foreground_Color_Translated(bc);
+                    fill_Rectangle(&apple);
+
+                    set_Background_Color_Translated(prev_fg);
+                    fill_Rectangle(&head);
+                    length_snake+=1;
+                    //Win condition
+                    if(length_snake == MAX_SNAKE_LENGTH)
+                    {
+                        won = true;
+                        continue;
+                    }
+                    index_tail-=1;
+                    index_tail %=MAX_SNAKE_LENGTH;
+                }
+
             }   
         }
-    }
-    
+    }   
 }

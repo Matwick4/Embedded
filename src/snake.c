@@ -248,8 +248,20 @@ bool snake()
                     index_tail-=1;
                     index_tail %=MAX_SNAKE_LENGTH;
                 }
+                head = get_Rectangle(segmX[index_head],segmY[index_head]);
+                for(int k = 0; k<length_snake-1;k++){
+                    int x = segmX[(index_tail+k)%MAX_SNAKE_LENGTH];
+                    int y = segmY[(index_tail+k)%MAX_SNAKE_LENGTH];
+                    if(is_Point_Within_Rectangle(&head,x,y)){
+                        alive = false;
+                    }
+                }
+                set_Foreground_Color_Translated(prev_fg);
+            }   resumed = false;
 
-            }   
         }
+        for(int k = 0;k<20000;k++)
+            ;
     }   
+    return alive;
 }

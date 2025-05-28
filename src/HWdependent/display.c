@@ -65,6 +65,13 @@ Graphics_Rectangle get_Rectangle(int16_t x, int16_t y)
     r.xMin = x-2;
     return r;
 }
+void clean_rect(const Graphics_Rectangle *r)
+{
+    uint32_t fgColor = get_Foreground_Color();
+    set_Foreground_Color_Translated(get_Background_Color());
+    draw_Rectangle(r);
+    set_Foreground_Color_Translated(fgColor);
+}
 
 Graphics_Rectangle getPaddleRectangle(int16_t x, int16_t y)
 {

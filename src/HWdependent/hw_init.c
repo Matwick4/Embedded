@@ -13,7 +13,7 @@ void HW_Init()
 {
     // Halt WDT
     WDT_A_holdTimer();
-    _configure_ADC();
+    ADC_config();
     
     // Disable master interrupts
     Interrupt_disableMaster();

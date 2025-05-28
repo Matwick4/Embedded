@@ -1,6 +1,6 @@
 #ifndef _PONG_H_
 #define _PONG_H_
-
+#include <ti/grlib/grlib.h>
 #include <stdbool.h>
 typedef struct ball_s {
 
@@ -12,8 +12,8 @@ typedef struct ball_s {
 
 typedef enum paddle_direction_e {
 
-    UP, // paddle up
-    DOWN // paddle down
+    UPp, // paddle up
+    DOWNp // paddle down
 
 } paddle_direction_t;
 typedef struct paddle_s {

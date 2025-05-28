@@ -1,6 +1,6 @@
 #ifndef _MENU_H_
 #define _MENU_H_
-
+#include <ti/grlib/grlib.h>
 #include <stdbool.h>
 
 //Show the main menu where one of the two games can be selected 

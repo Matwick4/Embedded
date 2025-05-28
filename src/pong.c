@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
-#define MAX_SCORE 10;
+#define MAX_SCORE 10
 
 //Globals
 static ball_t ball;
@@ -44,7 +44,7 @@ int score_check()
     for(j = 0; j<2; j++)
     {
         
-        if (score[j] == MAX_SCORE)
+        if(score[j] == MAX_SCORE)
         {
             if(j == 0){
                 winner = 1;
@@ -92,7 +92,7 @@ static void move_paddle_first_player(paddle_direction_t dir)
     //TODO. For the joystick part only check for movement on the y axis(theoretically)
     //Read input from joystick in the pong.c then draw the paddle based on value dir
     
-    if(dir == UP && paddle[0].last_dir != UP)
+    if(dir == UPp && paddle[0].last_dir != UPp)
     {
         if(paddle[0].y <= 0) {
 		
@@ -102,9 +102,9 @@ static void move_paddle_first_player(paddle_direction_t dir)
 		
 			paddle[0].y -= 2; // TODO check if correct
 		}
-        paddle[0].last_dir = UP;
+        paddle[0].last_dir = UPp;
     }
-    else if(dir == DOWN && paddle[0].last_dir != DOWN)
+    else if(dir == DOWNp && paddle[0].last_dir != DOWNp)
     {
         if(paddle[0].y >= DISPLAY_HEIGHT - paddle[0].h) {
 		
@@ -114,7 +114,7 @@ static void move_paddle_first_player(paddle_direction_t dir)
 		
 			paddle[0].y += 2;
 		}
-        paddle[0].last_dir = DOWN;
+        paddle[0].last_dir = DOWNp;
     }
     draw_paddle(0);
 }
@@ -122,7 +122,7 @@ static void move_paddle_first_player(paddle_direction_t dir)
 static void move_paddle_second_player(paddle_direction_t dir)
 {
     //TODO read from pong.c the button pressed then call this funct with appropriate parameter dir
-    if(dir == UP && paddle[0].last_dir != UP)
+    if(dir == UPp && paddle[0].last_dir != UPp)
     {
         if(paddle[1].y <= 0) {
 		
@@ -132,9 +132,9 @@ static void move_paddle_second_player(paddle_direction_t dir)
 		
 			paddle[1].y -= 2; // TODO check if correct
 		}
-        paddle[1].last_dir = UP;
+        paddle[1].last_dir = UPp;
     }
-    else if(dir == DOWN && paddle[1].last_dir != DOWN)
+    else if(dir == DOWNp && paddle[1].last_dir != DOWNp)
     {
         if(paddle[1].y >= DISPLAY_HEIGHT - paddle[1].h) {
 		
@@ -144,7 +144,7 @@ static void move_paddle_second_player(paddle_direction_t dir)
 		
 			paddle[1].y += 2;
 		}
-        paddle[1].last_dir = DOWN;
+        paddle[1].last_dir = DOWNp;
     } 
     draw_paddle(1);
 
@@ -172,7 +172,7 @@ static void move_paddle_ai()
     //Case of ball moving to the left
     else
     {
-        //The ball is moving up //TODO check if correct
+        //The ball is moving UPp //TODO check if correct
         if(ball.dy > 0)
         {
             if (ball.y > c) { 
@@ -277,7 +277,7 @@ static void change_ball_vector(int k){
 
     //Modify the ball.dy based on the point where it hit the paddle.
     //If the value below (hit_position) is low it means that the ball hit
-    //the lowest part of the paddle and so it needs "to go up". 
+    //the lowest part of the paddle and so it needs "to go UPp".
     //If instead it's big it means the ball hit the highest part of the paddle
     //and so the ball needs "to go down". Intermediate values are calculated as such.
     
@@ -334,7 +334,7 @@ static void draw_ball()
 {
     //TODO draw the ball using the ball fields
 
-    Graphics_Rectangle ball_rect = getRectangle(ball.x,ball.y);
+    Graphics_Rectangle ball_rect = get_Rectangle(ball.x,ball.y);
     set_Foreground_Color(GRAPHICS_COLOR_RED);
     fill_Rectangle(&ball_rect);
     
@@ -344,7 +344,7 @@ static void draw_ball()
 static void draw_paddle(int paddle_index)
 {
     //TODO draw the paddle based on paddle index to identify the right paddle
-    Graphics_Rectangle paddle_rect = getRectangle(paddle[paddle_index].x,paddle[paddle_index].y);
+    Graphics_Rectangle paddle_rect = get_Rectangle(paddle[paddle_index].x,paddle[paddle_index].y);
     set_Foreground_Color(GRAPHICS_COLOR_WHITE);
     fill_Rectangle(&paddle_rect);
     
@@ -440,13 +440,6 @@ void draw_title_play_options()
     set_Foreground_Color_Translated(prev_color);
 }
 
-void clean_rect(const Graphics_Rectangle *rect)
-{
-    uint32_t fgCol = get_Foreground_Color();
-    set_Foreground_Color_Translated(get_Background_Color());
-    draw_Rectangle(rect);
-    set_Foreground_Color_Translated(fgCol);
-}
 
 Graphics_Rectangle draw_selection_rect(const int sel, const int s)
 {
@@ -480,7 +473,7 @@ bool pong(){
     while(quit == 0)
     {
         //Show menu (decide whether play against AI or other player)
-        if(state = 1)
+        if(state == 1)
         {
             draw_pong_menu();
             state = 2;
@@ -502,11 +495,11 @@ bool pong(){
                     draw_ball();
                     if(gameState.joystickY < J_DOWN_TRESH)
                     {
-                        move_paddle_first_player(DOWN);
+                        move_paddle_first_player(DOWNp);
                     }
                     else if(gameState.joystickY > J_UP_TRESH)
                     {
-                        move_paddle_first_player(UP);
+                        move_paddle_first_player(UPp);
                     }
                     draw_paddle(0);
 
@@ -516,22 +509,22 @@ bool pong(){
                     readJoystickPosition();
                     if(isButtonUpPressed())
                     {
-                        move_paddle_second_player(UP);
+                        move_paddle_second_player(UPp);
                     }
                     else if(isButtonDownPressed())
                     {
-                        move_paddle_second_player(DOWN);
+                        move_paddle_second_player(DOWNp);
                     }
                     move_ball();
                     draw_paddle(1);
                     draw_ball();
                     if(gameState.joystickY < J_DOWN_TRESH)
                     {
-                        move_paddle_first_player(DOWN);
+                        move_paddle_first_player(DOWNp);
                     }
                     else if(gameState.joystickY > J_UP_TRESH)
                     {
-                        move_paddle_first_player(UP);
+                        move_paddle_first_player(UPp);
                     }
                     draw_paddle(0);
                 }

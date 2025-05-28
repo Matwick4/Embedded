@@ -52,6 +52,7 @@ Graphics_Rectangle getPaddleRectangle(int16_t,int16_t);
 Graphics_Rectangle get_Rectangle_decoration(int16_t,int16_t);
 //Paints rectanlge on the screen (filled with fg color)
 void fill_Rectangle(const Graphics_Rectangle *rectangle);
+void clean_rect(const Graphics_Rectangle *r);
 
 //Draws filled circle on screen
 void fill_Circle(int,int,int);

@@ -30,7 +30,7 @@ inline int chooseSnakeLength()
 
     int k = 0;
     bool redraw = true;
-    while(!gameState.buttonClicked()){
+    while(!gameState.buttonClicked){
         k++;
         readJoystickPosition();
         
@@ -56,7 +56,7 @@ inline int chooseSnakeLength()
                 fill_Rectangle(&r);
                 set_Foreground_Color_Translated(prev_FgColor);
                 char s[4];
-                sprintf(string, "%3d",opt[sel]);
+                sprintf(s, "%3d",opt[sel]);
                 draw_String_Centered((int8_t *)s,DISPLAY_WIDTH/2,50,false);
             }
         }
@@ -189,7 +189,8 @@ bool snake()
                         break;
                 }
                 set_Foreground_Color_Translated(prev_fg);
-                fill_Rectangle(&get_Rectangle(segmX[index_head],segmY[index_head]));
+                Graphics_Rectangle r = get_Rectangle(segmX[index_head],segmY[index_head]);
+                fill_Rectangle(&r);
 
                 //Look for collision with wall
                 if (segmY[index_head] < 2 || segmY[index_head] > DISPLAY_HEIGHT - 2 || segmX[index_head] < 2 || segmX[index_head] > DISPLAY_WIDTH - 2)
@@ -205,28 +206,28 @@ bool snake()
                     if(Xapple == -1){
                             
                             bool valid;
-                            while (!valid)
+                            do
                             {
                                 valid = true;
                                 //New apple position
                                 Xapple = rand() % (DISPLAY_WIDTH - 4) + 2;
                                 Yapple = rand() % (DISPLAY_HEIGHT - 4) + 2;
-                                apple = getRectangle(Xapple, Yapple);
+                                Graphics_Rectangle apple = get_Rectangle(Xapple, Yapple);
 
                                 //Check for overlap
                                 int j;
                                 for (j = 0; j < length_snake; j++)
                                 {
                                     int i = (index_tail + j) % MAX_SNAKE_LENGTH;
-                                    Graphics_Rectangle segment = getRectangle(segmX[i], segmY[i]);
+                                    Graphics_Rectangle segment = get_Rectangle(segmX[i], segmY[i]);
 
-                                    if (isOverlapping(&apple, &segment))
+                                    if (is_Overlapping(&apple, &segment))
                                     {
                                         valid = false;
                                         break;
                                     }
                                 }
-                            }
+                            }while (!valid);
                     }
                     set_Foreground_Color(GRAPHICS_COLOR_GREEN);
                     fill_Rectangle(&apple);

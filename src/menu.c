@@ -4,7 +4,7 @@
 #include "HWdependent/joystick.h"
 #include "HWdependent/display.h"
 
-const char *const game_opt = {"Pong","Snake"};
+const char *const game_opt[] = {"Pong","Snake"};
 const int lengthOptMenu = 2;
 const int offsetOptMenu = 60;
 
@@ -91,7 +91,7 @@ void show_games_options(int s){
 
 Graphics_Rectangle draw_selection_rectangle(const int sel, const int s)
 {
-        const int padding = 20;
+       const int padding = 20;
        Graphics_Rectangle rect;
        rect.xMax = DISPLAY_WIDTH - padding;
        rect.xMin = padding;

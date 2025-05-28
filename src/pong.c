@@ -376,13 +376,13 @@ static void draw_pong_menu()
     prevRect.yMin = 0;
     prevRect.yMax = 0;
     
-    while(!(gameState.buttonClicked) || selected_curr >= lengthOpt)
+    while(!(gameState.buttonClicked))
     {
         readJoystickPosition();
 
         if(gameState.joystickY < J_DOWN_TRESH)
         {
-            selected_curr = min(selected_curr+1,lengthOpt);
+            selected_curr = min(selected_curr+1,lengthOpt-1);
             gameState.joystickY = J_DOWN_TRESH+1;
             int j;
             for(j = 0;j<400000;j++){;}
@@ -397,6 +397,10 @@ static void draw_pong_menu()
                 
             
         }
+        if(gameState.buttonClicked)
+        {
+                 gameState.buttonClicked = true;
+        }
         draw_title_play_options();
 
         if(selected_curr != prev_sel)
@@ -407,13 +411,7 @@ static void draw_pong_menu()
         prevRect = draw_selection_rect(selected_curr,step);
         draw_pong_options(step);
 
-        if(gameState.buttonClicked)
-        {
-            if(selected_curr == lengthOpt)
-            {
-                gameState.buttonClicked = false;
-            }
-        }
+
     }
     gameState.buttonClicked = false;
     if (selected_curr == 0)

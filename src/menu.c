@@ -23,13 +23,13 @@ void show_main_menu(){
         prevRect.yMin = 0;
         prevRect.yMax = 0;
 
-        while(!(gameState.buttonClicked) || selected_curr >= lengthOptMenu)
+        while(!(gameState.buttonClicked))
         {
             readJoystickPosition();
 
             if(gameState.joystickY < J_DOWN_TRESH)
             {
-                selected_curr = min(selected_curr+1,lengthOptMenu);
+                selected_curr = min(selected_curr+1,lengthOptMenu-1);
                 gameState.joystickY = J_DOWN_TRESH+1;
                 int j;
                 for(j = 0;j<400000;j++){;}
@@ -44,6 +44,9 @@ void show_main_menu(){
 
 
             }
+            if(isButtonUpPressed()){
+                gameState.buttonClicked = true;
+            }
             show_title();
 
             if(selected_curr != prev_sel)
@@ -54,6 +57,7 @@ void show_main_menu(){
             prevRect = draw_selection_rectangle(selected_curr,step);
             show_games_options(step);
 
+            /*
             if(gameState.buttonClicked)
             {
                 if(selected_curr == lengthOptMenu)
@@ -61,6 +65,7 @@ void show_main_menu(){
                     gameState.buttonClicked = false;
                 }
             }
+            */
         }
         gameState.buttonClicked = false;
         gameState.game_selected = selected_curr;

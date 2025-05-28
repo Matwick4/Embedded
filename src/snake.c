@@ -13,7 +13,7 @@
 inline int chooseSnakeLength()
 {
     clear_Display();
-    draw_String_Centered("Choose max snake length", DISPLAY_WIDTH/2,10,true);
+    draw_String_Centered("Choose max length", DISPLAY_WIDTH/2,10,true);
     int opt[OPTIONAL_LEN];
     int i = 0;
     for(i = 0; i<OPTIONAL_LEN;i++){
@@ -59,18 +59,23 @@ inline int chooseSnakeLength()
                 sprintf(s, "%3d",opt[sel]);
                 draw_String_Centered((int8_t *)s,DISPLAY_WIDTH/2,50,false);
             }
+            if(isButtonUpPressed()){
+                gameState.buttonClicked = true;
+            }
         }
         redraw = false;
         int i;
         for (i = 0; i<40000;i++){;} // wait
         gameState.buttonClicked = false;
-        return opt[sel];
     }
+    return (opt[sel]);
+
 }
 
 bool snake()
 {
-    int max_length = chooseSnakeLength();
+    //gameState.buttonClicked = false;
+    int maxlength = chooseSnakeLength();
     clear_Display();
     bool won = false;
     bool alive = true;
@@ -92,7 +97,6 @@ bool snake()
     enum snake_dir lastDir = UP;
     bool resumed = true;
 
-    int a = 0;
     int b = 0;
 
     uint32_t prev_fg = get_Foreground_Color();
@@ -245,7 +249,7 @@ bool snake()
                     fill_Rectangle(&head);
                     length_snake+=1;
                     //Win condition
-                    if(length_snake == MAX_SNAKE_LENGTH)
+                    if(maxlength == MAX_SNAKE_LENGTH)
                     {
                         won = true;
                         continue;

@@ -45,7 +45,7 @@ void draw_Rectangle(const Graphics_Rectangle *rectangle){
     Graphics_drawRectangle(&gameState.gContext, rectangle);
 }
 
-Graphics_Rectangle getBallRectangle(int x, int y)
+Graphics_Rectangle getBallRectangle(int16_t x, int16_t y)
 {
     Graphics_Rectangle ball;
     ball.xMin = x;
@@ -56,34 +56,34 @@ Graphics_Rectangle getBallRectangle(int x, int y)
     return ball;
 }
 
-Graphics_Rectangle get_Rectangle(int x, int y)
+Graphics_Rectangle get_Rectangle(int16_t x, int16_t y)
 {
     Graphics_Rectangle r;
-    rect.yMin = y-2;
-    rect.yMax = y+2;
-    rect.xMax = x+2;
-    rect.xMin = x-2;
+    r.yMin = y-2;
+    r.yMax = y+2;
+    r.xMax = x+2;
+    r.xMin = x-2;
     return r;
 }
 
-Graphics_Rectangle getPaddleRectangle(int x, int y)
+Graphics_Rectangle getPaddleRectangle(int16_t x, int16_t y)
 {
     Graphics_Rectangle paddle;
-    ball.xMin = x;
-    ball.xMax = x+10;
-    ball.yMin = y;
-    ball.yMax = y+30;
+    paddle.xMin = x;
+    paddle.xMax = x+10;
+    paddle.yMin = y;
+    paddle.yMax = y+30;
 
     return paddle;
 }
 
-Graphics_Rectangle get_Rectangle_decoration(int x, int y)
+Graphics_Rectangle get_Rectangle_decoration(int16_t x, int16_t y)
 {
     Graphics_Rectangle r;
-    rect.yMin = y-1;
-    rect.yMax = y+1;
-    rect.xMax = x+1;
-    rect.xMin = x-1;
+    r.yMin = y-1;
+    r.yMax = y+1;
+    r.xMax = x+1;
+    r.xMin = x-1;
     return r;
 }
 

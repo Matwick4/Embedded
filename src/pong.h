@@ -4,12 +4,18 @@
 #include <stdbool.h>
 typedef struct ball_s {
 
-	int x, y; //position on the screen 
+	int x, y; //position on the screen
 	int w,h; // ball width and height
-	int dx, dy; // movement vector 
+	int dx, dy; // movement vector
 
 } ball_t;
 
+typedef enum paddle_direction_e {
+
+    UP, // paddle up
+    DOWN // paddle down
+
+} paddle_direction_t;
 typedef struct paddle_s {
 
 	int x,y; // position on the screen
@@ -18,13 +24,6 @@ typedef struct paddle_s {
 
 } paddle_t;
 
-
-typedef enum paddle_direction_e {
-
-	UP, // paddle up
-	DOWN // paddle down
-
-} paddle_direction_t;
 
 //Pong game
 bool pong();

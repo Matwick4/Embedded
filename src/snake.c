@@ -15,9 +15,9 @@ inline int chooseSnakeLength()
     clear_Display();
     draw_String_Centered("Choose max snake length", DISPLAY_WIDTH/2,10,true);
     int opt[OPTIONAL_LEN];
-    
-    for(int i = 0; i<OPTIONAL_LEN;i++){
-        opt[i] = 10 *(i+1) // Available snake lengths (10,20,30,...)
+    int i = 0;
+    for(i = 0; i<OPTIONAL_LEN;i++){
+        opt[i] = 10 *(i+1); // Available snake lengths (10,20,30,...)
     }
     int sel = 0;
     Graphics_Rectangle r;
@@ -61,7 +61,8 @@ inline int chooseSnakeLength()
             }
         }
         redraw = false;
-        for (int i = 0; i<40000;i++){;} // wait
+        int i;
+        for (i = 0; i<40000;i++){;} // wait
         gameState.buttonClicked = false;
         return opt[sel];
     }
@@ -87,8 +88,8 @@ bool snake()
     segmY[0] = DISPLAY_HEIGHT/2;
     segmX[0] = DISPLAY_WIDTH/2;
 
-    snake_dir direction = UP;
-    snake_dir lastDir = UP;
+    enum snake_dir direction = UP;
+    enum snake_dir lastDir = UP;
     bool resumed = true;
 
     int a = 0;
@@ -105,7 +106,8 @@ bool snake()
             resumed = true;
             
             //Paint every piece of the snake after a pause
-            for(int j = 0; j<length_snake;j++)
+            int j;
+            for(j = 0; j<length_snake;j++)
             {
                 int ind = (j+index_tail)%MAX_SNAKE_LENGTH;
                 set_Foreground_Color_Translated(prev_fg);
@@ -158,7 +160,8 @@ bool snake()
                 int prevHead = index_head;
                 if(length_snake>1)
                 {
-                    draw_Rectangle(&get_Rectangle_decoration(segmX[index_head],segmY[index_head]));
+                   Graphics_Rectangle r = get_Rectangle_decoration(segmX[index_head],segmY[index_head]);
+                    draw_Rectangle(&r);
                 }
                 index_tail+=1;
                 index_tail %= MAX_SNAKE_LENGTH;
@@ -189,7 +192,7 @@ bool snake()
                 fill_Rectangle(&get_Rectangle(segmX[index_head],segmY[index_head]));
 
                 //Look for collision with wall
-                if (segmentsY[headIndex] < 2 || segmentsY[headIndex] > DISPLAY_HEIGHT - 2 || segmentsX[headIndex] < 2 || segmentsX[headIndex] > DISPLAY_WIDTH - 2)
+                if (segmY[index_head] < 2 || segmY[index_head] > DISPLAY_HEIGHT - 2 || segmX[index_head] < 2 || segmX[index_head] > DISPLAY_WIDTH - 2)
                 {
                     alive = false;
                     continue;
@@ -211,9 +214,10 @@ bool snake()
                                 apple = getRectangle(Xapple, Yapple);
 
                                 //Check for overlap
-                                for (int j = 0; j < length_snake; j++)
+                                int j;
+                                for (j = 0; j < length_snake; j++)
                                 {
-                                    int i = (tailIndex + j) % MAX_SNAKE_LENGTH;
+                                    int i = (index_tail + j) % MAX_SNAKE_LENGTH;
                                     Graphics_Rectangle segment = getRectangle(segmX[i], segmY[i]);
 
                                     if (isOverlapping(&apple, &segment))
@@ -249,7 +253,8 @@ bool snake()
                     index_tail %=MAX_SNAKE_LENGTH;
                 }
                 head = get_Rectangle(segmX[index_head],segmY[index_head]);
-                for(int k = 0; k<length_snake-1;k++){
+                int k;
+                for(k = 0; k<length_snake-1;k++){
                     int x = segmX[(index_tail+k)%MAX_SNAKE_LENGTH];
                     int y = segmY[(index_tail+k)%MAX_SNAKE_LENGTH];
                     if(is_Point_Within_Rectangle(&head,x,y)){
@@ -260,8 +265,9 @@ bool snake()
             }   resumed = false;
 
         }
-        for(int k = 0;k<20000;k++)
-            ;
+        int k;
+        for(k = 0;k<20000;k++){;}
+
     }   
     return alive;
 }

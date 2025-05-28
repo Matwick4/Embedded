@@ -40,7 +40,8 @@ static void init()
 int score_check()
 {
     int winner = 0;
-    for(int j = 0; j<2; j++)
+    int j;
+    for(j = 0; j<2; j++)
     {
         
         if (score[j] == MAX_SCORE)
@@ -188,7 +189,7 @@ static void move_paddle_ai()
         {
             if (ball.dy < 0) {
 		
-                if (ball.y < center) { 
+                if (ball.y < c) {
                     
                     paddle[1].y -= ball_speed;
                 
@@ -247,8 +248,8 @@ static void move_ball()
     }
 
     //Check for paddle collisions
-
-    for(int k = 0; k<2; k++){
+    int k;
+    for(k = 0; k<2; k++){
         
         //Collision!
         if(collision_check(ball,paddle[k]) == 1)
@@ -296,7 +297,7 @@ static void change_ball_vector(int k){
         ball.dy = 1;
     }
 
-    else if (&& hit_position < 20) 
+    else if (hit_position < 20)
     {
         ball.dy = 0;
     }
@@ -325,7 +326,7 @@ static void change_ball_vector(int k){
         
         if (ball.x > DISPLAY_WIDTH - ball.w - 2) {
         
-            ball.x = DISPLAY_WIDTH - ball.w - 2
+            ball.x = DISPLAY_WIDTH - ball.w - 2;
         }
     }
 }
@@ -353,10 +354,11 @@ static void draw_pong_options(int step)
 {
     int h_w = DISPLAY_WIDTH/2;
     int offset = offsetOpt;
-    for(int j = 0; j<lengthOpt;j++)
+    int j = 0;
+    for(j = 0; j<lengthOpt;j++)
     {
-        draw_String_Centered(gameOptions[i],h_w,offset,false);
-        offset+=s;
+        draw_String_Centered(gameOptions[j],h_w,offset,false);
+        offset+=step;
     }
 }
 static void draw_pong_menu()
@@ -374,24 +376,24 @@ static void draw_pong_menu()
     prevRect.yMin = 0;
     prevRect.yMax = 0;
     
-    while(!(gameState.buttonClicked) || selected >= lengthOpt)
+    while(!(gameState.buttonClicked) || selected_curr >= lengthOpt)
     {
         readJoystickPosition();
 
         if(gameState.joystickY < J_DOWN_TRESH)
         {
-            selected_curr = min(selected+1,lengthOpt);
+            selected_curr = min(selected_curr+1,lengthOpt);
             gameState.joystickY = J_DOWN_TRESH+1;
-            for(int j = 0;j<400000;j++)
-            ;
+            int j;
+            for(j = 0;j<400000;j++){;}
 
         }
         else if(gameState.joystickY > J_UP_TRESH)
         {
-            selected_curr = max(selected-1,0);
+            selected_curr = max(selected_curr-1,0);
             gameState.joystickY = J_UP_TRESH-1;
-            for(int j = 0;j<400000;j++)
-                ;
+            int j;
+            for(j = 0;j<400000;j++){;}
                 
             
         }
@@ -486,9 +488,9 @@ bool pong(){
         //Game
         else if(state == 2)
         {
-            score = score_check();
+            int s = score_check();
             //Nobody has won yet; continue
-            if(score == 0)
+            if(s == 0)
             {
                 //Changes based on selected AI
                 if(AI)

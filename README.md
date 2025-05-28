@@ -26,8 +26,9 @@ Pong leverages both the left analog stick and the two right-side buttons on the 
 This setup allows for both accessible gameplay and a faithful recreation of the original arcade experience.
 
 ### 🐍 Snake
-Snake fully utilizes the analog stick, enabling smooth movement in all four cardinal directions. The implementation showcases the potential of the MSP432 board’s input capabilities while providing a nostalgic, fast-paced gaming experience.
+Snake fully utilizes the analog stick, enabling smooth movement in all four cardinal directions. The implementation showcases the potential of the MSP432 board’s input capabilities.
 
+---
 
 This project combines embedded systems programming with retro game design to deliver a fun and educational hands-on application of the MSP432 platform.
 

@@ -22,6 +22,7 @@ int main(void)
         int winner_pong;
         bool winner_snake;
         switch(gameState.game_selected){
+
             case 0: 
                 winner_pong = pong();
                 show_end_game_screen(true,winner_pong);
@@ -30,6 +31,10 @@ int main(void)
             case 1: 
                 winner_snake = snake();
                 show_end_game_screen(winner_snake,-1);
+            break;
+
+            case -1:
+                //back to the main menu
             break;
 
             default:

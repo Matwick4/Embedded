@@ -1,6 +1,18 @@
 # Embedded Software for the Internet of Things
 <br>
 
+<h2>📋 TO-DO LIST (dsegnalate qui eventuali problemi o cose da fare)</h2>
+<ol>
+  <li>Far funzionare la schermata di selezione per pong (per ora si può accedere alla schermata di gamemode, ma non si può avviare il gioco)</li>
+  <li>Far funzionare Pong (una volta che parte vedere se funziona, aggiustarlo e perfezionarlo) (per il momento pong ha massima priorità sul resto) </li>
+  <li>Aggiungere schermata di END dove si dice chi ha vinto </li>
+  <li>Trovare le librerie per far funzionare Buzzer e Led RGB e, se esistono, importarle nel progetto e capire come funzioano</li>
+  <li>Aggiungere Buzzer (quando la pallina rimbalaza o il giocatore segna punto parte un suono)</li>
+  <li>Aggiungere LED RGB (nel menu led arcobaleno che cicla i colori, nel gioco si colora di rosso se segna player left, di rosso se segna player right)</li>
+</ol>
+<br>
+<br>
+
 <h2>❓ What is this repository?</h2>
 This repository contains the final project for the course <em>Embedded Software for the Internet of Things</em>  held in University of Trento by professor Kasım Sinan Yıldırım during academic year 2024/2025.
 <br>

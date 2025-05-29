@@ -1,5 +1,5 @@
-#include "state.h"
-#include "menu.h"
+#include "src/state.h"
+#include "src/menu.h"
 #include <stdio.h>
 #include "HWdependent/joystick.h"
 #include "HWdependent/display.h"
@@ -8,9 +8,28 @@ const char *const game_opt[] = {"Pong","Snake"};
 const int lengthOptMenu = 2;
 const int offsetOptMenu = 60;
 
+//variables to be certain that joystick is centered
+int joystickX_center = 0;
+int joystickY_center = 0;
+//joystick drifts on the right so we need a new threshold
+const int JOYSTICK_THRESHOLD = 1000;
+
+
+
+void calibrate_joystick_center() {
+    readJoystickPosition();
+    joystickX_center = gameState.joystickX;
+    joystickY_center = gameState.joystickY;
+}
+
+
+
 void show_main_menu(){
 
         clear_Display();
+        calibrate_joystick_center();
+
+
         int selected_curr = 0;
         int step = get_Font_Height()*2;
 
@@ -27,23 +46,43 @@ void show_main_menu(){
         {
             readJoystickPosition();
 
+            //joystick DOWN
             if(gameState.joystickY < J_DOWN_TRESH)
             {
                 selected_curr = min(selected_curr+1,lengthOptMenu-1);
                 gameState.joystickY = J_DOWN_TRESH+1;
                 int j;
                 for(j = 0;j<400000;j++){;}
-
             }
+
             else if(gameState.joystickY > J_UP_TRESH)
             {
                 selected_curr = max(selected_curr-1,0);
                 gameState.joystickY = J_UP_TRESH-1;
                 int j;
                 for(j = 0;j<400000;j++){;}
-
-
             }
+
+            //joystick RIGHT (SELECT)
+            if(gameState.joystickX > J_RIGHT_TRESH + JOYSTICK_THRESHOLD)
+            {
+                gameState.buttonClicked = true;
+                gameState.joystickX = J_RIGHT_TRESH - 1;
+                int j;
+                for(j = 0; j < 400000; j++) {;}
+            }
+
+            //joystick LEFT (CANCEL / BACK)
+            if (gameState.joystickX < J_LEFT_TRESH)
+            {
+                gameState.game_selected = -1;
+                gameState.buttonClicked = true;
+                gameState.joystickX = J_LEFT_TRESH + 1;
+                int j;
+                for(j = 0; j < 400000; j++) {;}
+            }
+
+
             if(isButtonUpPressed()){
                 gameState.buttonClicked = true;
             }
@@ -74,7 +113,7 @@ void show_main_menu(){
 
 void show_title(){
     uint32_t pc = get_Foreground_Color();
-    set_Foreground_Color(GRAPHICS_COLOR_GREEN);
+    set_Foreground_Color(GRAPHICS_COLOR_RED);
     int w = DISPLAY_WIDTH;
     const Graphics_Font *prevFont = get_Font();
     const Graphics_Font *titleFont = &g_sFontCm20b;

@@ -1,7 +1,7 @@
 # Embedded Software for the Internet of Things
 <br>
 
-<h2>📋 TO-DO LIST (dsegnalate qui eventuali problemi o cose da fare)</h2>
+<h2>📋 TO-DO LIST (segnalate qui eventuali problemi o cose da fare)</h2>
 <ol>
   <li>Far funzionare la schermata di selezione per pong (per ora si può accedere alla schermata di gamemode, ma non si può avviare il gioco)</li>
   <li>Far funzionare Pong (una volta che parte vedere se funziona, aggiustarlo e perfezionarlo) (per il momento pong ha massima priorità sul resto) </li>

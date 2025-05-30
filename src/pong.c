@@ -459,6 +459,7 @@ static void draw_pong_menu()
             int j;
             for(j = 0;j<400000;j++){;} // some busy waiting
         }
+        draw_title_play_options(); 
         if(selected_curr != prev_sel)  
         {
             clean_rect(&prevRect); // clear the selection rectangle

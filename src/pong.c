@@ -465,15 +465,15 @@ static void draw_pong_menu()
             prev_sel = selected_curr;
         }
 
-
         draw_pong_option(step);
         
         if (isButtonUpPressed())
         {
             gameState.buttonState = true;
         }
+    }
 
-        gameState.buttonClicked = false;
+    gameState.buttonClicked = false;
         if (selected_curr == 0)
         {
             AI = true;
@@ -482,8 +482,6 @@ static void draw_pong_menu()
         {
             AI = false;
         }
-        
-    }
 }
 
 

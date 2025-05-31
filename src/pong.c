@@ -13,7 +13,7 @@ static ball_t ball;
 static paddle_t paddle[2];
 int score[] = {0,0};
 static bool AI = false;
-const char *const gameOptions[] = {"PvE","PvP"};
+const char *const gameOptions[] = {"Player vs CPU","Player vs Player"};
 const int lengthOpt = 2;
 const int offsetOpt = 60;
 
@@ -95,25 +95,25 @@ static void move_paddle_first_player(paddle_direction_t dir)
     if(dir == UPp && paddle[0].last_dir != UPp)
     {
         if(paddle[0].y <= 0) {
-		
-			paddle[0].y = 0;
 
-		} else {
-		
-			paddle[0].y -= 2; // TODO check if correct
-		}
+            paddle[0].y = 0;
+
+        } else {
+
+            paddle[0].y -= 2; // TODO check if correct
+        }
         paddle[0].last_dir = UPp;
     }
     else if(dir == DOWNp && paddle[0].last_dir != DOWNp)
     {
         if(paddle[0].y >= DISPLAY_HEIGHT - paddle[0].h) {
-		
-			paddle[0].y = DISPLAY_HEIGHT - paddle[0].h;
-		
-		} else { 
-		
-			paddle[0].y += 2;
-		}
+
+            paddle[0].y = DISPLAY_HEIGHT - paddle[0].h;
+
+        } else {
+
+            paddle[0].y += 2;
+        }
         paddle[0].last_dir = DOWNp;
     }
     draw_paddle(0);
@@ -125,25 +125,25 @@ static void move_paddle_second_player(paddle_direction_t dir)
     if(dir == UPp && paddle[0].last_dir != UPp)
     {
         if(paddle[1].y <= 0) {
-		
-			paddle[1].y = 0;
 
-		} else {
-		
-			paddle[1].y -= 2; // TODO check if correct
-		}
+            paddle[1].y = 0;
+
+        } else {
+
+            paddle[1].y -= 2; // TODO check if correct
+        }
         paddle[1].last_dir = UPp;
     }
     else if(dir == DOWNp && paddle[1].last_dir != DOWNp)
     {
         if(paddle[1].y >= DISPLAY_HEIGHT - paddle[1].h) {
-		
-			paddle[1].y = DISPLAY_HEIGHT - paddle[1].h;
-		
-		} else { 
-		
-			paddle[1].y += 2;
-		}
+
+            paddle[1].y = DISPLAY_HEIGHT - paddle[1].h;
+
+        } else {
+
+            paddle[1].y += 2;
+        }
         paddle[1].last_dir = DOWNp;
     } 
     draw_paddle(1);
@@ -176,19 +176,19 @@ static void move_paddle_ai()
         if(ball.dy > 0)
         {
             if (ball.y > c) { 
-				
-				paddle[1].y += ball_speed;
 
-			} else { 
-			
-				paddle[1].y -= ball_speed;
-			} 
+                paddle[1].y += ball_speed;
+
+            } else {
+
+                paddle[1].y -= ball_speed;
+            }
         }
         //The ball is moving down //TODO check if correct
         if(ball.dy < 0)
         {
             if (ball.dy < 0) {
-		
+
                 if (ball.y < c) {
                     
                     paddle[1].y -= ball_speed;
@@ -203,13 +203,13 @@ static void move_paddle_ai()
         if(ball.dy == 0)
         {
             if (ball.y < c) { 
-			
-				paddle[1].y -= 2;
 
-			} else {
-			
-				paddle[1].y += 2;
-			}
+                paddle[1].y -= 2;
+
+            } else {
+
+                paddle[1].y += 2;
+            }
         }
     }
     //Adjust the paddle if it arrives at the top/bottom of the screen
@@ -363,7 +363,7 @@ static void draw_pong_options(int step)
 }
 static void draw_pong_menu()
 {
-    clear_Display(); 
+    clear_Display();
     int selected_curr = 0;
     int step = get_Font_Height()*2;
 
@@ -385,28 +385,28 @@ static void draw_pong_menu()
             selected_curr = min(selected_curr+1,lengthOpt-1);
             gameState.joystickY = J_DOWN_TRESH+1;
             int j;
-            for(j = 0;j<400000;j++){;} 
+            for(j = 0;j<400000;j++){;}
 
         }
-        else if(gameState.joystickY > J_UP_TRESH) 
+        else if(gameState.joystickY > J_UP_TRESH)
         {
             selected_curr = max(selected_curr-1,0);
             gameState.joystickY = J_UP_TRESH-1;
             int j;
-            for(j = 0;j<400000;j++){;} 
+            for(j = 0;j<400000;j++){;}
         }
-        if(gameState.buttonClicked) 
+        if(gameState.buttonClicked)
         {
             gameState.buttonClicked = true;
         }
-        draw_title_play_options(); 
+        draw_title_play_options();
 
-        if(selected_curr != prev_sel)  
+        if(selected_curr != prev_sel)
         {
-            clean_rect(&prevRect); 
+            clean_rect(&prevRect);
             prev_sel = selected_curr;
         }
-        prevRect = draw_selection_rect(selected_curr,step); 
+        prevRect = draw_selection_rect(selected_curr,step);
         draw_pong_options(step);
 
 
@@ -427,7 +427,7 @@ Different version need to be tested
 
 static void draw_pong_menu()
 {
-    clear_Display(); 
+    clear_Display();
     int selected_curr = 0;
     int step = get_Font_Height()*2;
 
@@ -449,25 +449,25 @@ static void draw_pong_menu()
             selected_curr = min(selected_curr+1,lengthOpt-1);
             gameState.joystickY = J_DOWN_TRESH+1;
             int j;
-            for(j = 0;j<400000;j++){;} 
+            for(j = 0;j<400000;j++){;}
 
         }
-        else if(gameState.joystickY > J_UP_TRESH) 
+        else if(gameState.joystickY > J_UP_TRESH)
         {
             selected_curr = max(selected_curr-1,0);
             gameState.joystickY = J_UP_TRESH-1;
             int j;
             for(j = 0;j<400000;j++){;} // some busy waiting
         }
-        draw_title_play_options(); 
-        if(selected_curr != prev_sel)  
+        draw_title_play_options();
+        if(selected_curr != prev_sel)
         {
             clean_rect(&prevRect); // clear the selection rectangle
             prev_sel = selected_curr;
         }
 
         draw_pong_option(step);
-        
+
         if (isButtonUpPressed())
         {
             gameState.buttonState = true;
@@ -497,7 +497,7 @@ void draw_title_play_options()
     const Graphics_Font *prev_font = get_Font();
     //set_Font(titleFont);
 
-    draw_String_Centered("Choose gamemode",w/2,22,false);
+    draw_String_Centered("SELECT GAMEMODE",w/2,22,false);
     set_Font(prev_font);
     set_Foreground_Color_Translated(prev_color);
 }
@@ -505,7 +505,7 @@ void draw_title_play_options()
 
 Graphics_Rectangle draw_selection_rect(const int sel, const int s)
 {
-    const int padding = 20;
+    const int padding = 10;
     Graphics_Rectangle rect;
     rect.xMax = DISPLAY_WIDTH - padding;
     rect.xMin = padding;
@@ -526,7 +526,7 @@ Graphics_Rectangle draw_selection_rect(const int sel, const int s)
 bool pong(){
     //Clear display, set ball and paddles
 
-    clear_Display(); 
+    clear_Display();
     init();
 
     uint32_t previous_foregroundColor = get_Foreground_Color();
@@ -604,5 +604,3 @@ bool pong(){
     }
     return score_check();
 }
-
-1

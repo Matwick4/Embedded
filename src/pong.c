@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
-#define MAX_SCORE 10
+#define MAX_SCORE 5
 
 //Globals
 static ball_t ball;
@@ -18,6 +18,10 @@ const int lengthOpt = 2;
 const int offsetOpt = 60;
 
 
+
+//================================================================================
+//==========INIT SECTION==========================================================
+//================================================================================
 static void init()
 {
     ball.x = DISPLAY_WIDTH/2;
@@ -38,6 +42,13 @@ static void init()
     paddle[1].h = 30;
 }
 
+
+
+//================================================================================
+//==========CHECK SECTION=========================================================
+//================================================================================
+
+//==========SCORE CHECK======================================================
 int score_check()
 {
     int winner = 0;
@@ -62,6 +73,7 @@ int score_check()
     return winner;
 }
 
+//==========COLLISION CHECK==================================================
 int collision_check(ball_t b, paddle_t p)
 {
     int b_top,p_top;
@@ -89,6 +101,157 @@ int collision_check(ball_t b, paddle_t p)
     return 1;
 }
 
+
+
+//================================================================================
+//==========DRAWING SECTION=======================================================
+//================================================================================
+
+//==========DRAW BALL========================================================
+static void draw_ball()
+{
+    //TODO draw the ball using the ball fields
+
+    Graphics_Rectangle ball_rect = get_Rectangle(ball.x,ball.y);
+    set_Foreground_Color(GRAPHICS_COLOR_RED);
+    fill_Rectangle(&ball_rect);
+
+    //Check if necessary to do collision check part here
+}
+
+//==========DRAW PADDLE======================================================
+static void draw_paddle(int paddle_index)
+{
+    //TODO draw the paddle based on paddle index to identify the right paddle
+    Graphics_Rectangle paddle_rect = get_Rectangle(paddle[paddle_index].x,paddle[paddle_index].y);
+    set_Foreground_Color(GRAPHICS_COLOR_BLACK);
+    fill_Rectangle(&paddle_rect);
+
+    //Check if necessary to do collision check part here
+}
+
+//==========DRAW OPTIONS=====================================================
+static void draw_pong_options(int step)
+{
+    int h_w = DISPLAY_WIDTH/2;
+    int offset = offsetOpt;
+    int j = 0;
+    for(j = 0; j<lengthOpt;j++)
+    {
+        draw_String_Centered(gameOptions[j],h_w,offset,false);
+        offset+=step;
+    }
+}
+
+//==========DRAW MENU========================================================
+static void draw_pong_menu()
+{
+    clear_Display();
+    int selected_curr = 0;
+    int step = get_Font_Height()*2;
+
+    int prev_sel = selected_curr;
+    gameState.buttonClicked = false;
+
+    Graphics_Rectangle prevRect;
+    prevRect.xMin = 0;
+    prevRect.xMax = 0;
+    prevRect.yMin = 0;
+    prevRect.yMax = 0;
+
+    while(!gameState.buttonClicked)
+    {
+        readJoystickPosition();
+
+        if(gameState.joystickY < J_DOWN_TRESH)
+        {
+            selected_curr = min(selected_curr+1,lengthOpt-1);
+            gameState.joystickY = J_DOWN_TRESH+1;
+            int j;
+            for(j = 0;j<400000;j++){;}
+        }
+        else if(gameState.joystickY > J_UP_TRESH)
+        {
+            selected_curr = max(selected_curr-1,0);
+            gameState.joystickY = J_UP_TRESH-1;
+            int j;
+            for(j = 0;j<400000;j++){;} // some busy waiting
+        }
+
+        draw_title_play_options();
+
+        if(selected_curr != prev_sel)
+        {
+            clean_rect(&prevRect); // clear the selection rectangle
+            prev_sel = selected_curr;
+        }
+        prevRect = draw_selection_rect(selected_curr, step); // draw new rectangle
+
+        draw_pong_options(step);
+
+        //joystick RIGHT (SELECT)
+        if(gameState.joystickX > J_RIGHT_TRESH + 1000 )
+        {
+            gameState.buttonClicked = true;
+            int j;
+            for(j = 0; j < 400000; j++) {;}
+        }
+    }
+
+    gameState.buttonClicked = false;
+        if (selected_curr == 0)
+        {
+            AI = true;
+        }
+        else
+        {
+            AI = false;
+        }
+}
+
+//==========DRAW TITLE=======================================================
+void draw_title_play_options()
+{
+    uint32_t prev_color = get_Foreground_Color();
+    set_Foreground_Color(GRAPHICS_COLOR_RED);
+    int w = DISPLAY_WIDTH;
+
+    const Graphics_Font *prev_font = get_Font();
+    //set_Font(titleFont);
+
+    draw_String_Centered("SELECT GAMEMODE",w/2,22,false);
+    set_Font(prev_font);
+    set_Foreground_Color_Translated(prev_color);
+}
+
+//==========DRAW SELECTION===================================================
+Graphics_Rectangle draw_selection_rect(const int sel, const int s)
+{
+    const int padding = 10;
+    Graphics_Rectangle rect;
+    rect.xMax = DISPLAY_WIDTH - padding;
+    rect.xMin = padding;
+    rect.yMin = offsetOpt + sel * s - s/2 ;
+    rect.yMax = offsetOpt + sel * s + s/2 ;
+
+    if(sel == lengthOpt)
+    {
+        rect.xMax = DISPLAY_WIDTH-1;
+        rect.xMin = DISPLAY_WIDTH-20;
+        rect.yMin = DISPLAY_HEIGHT-15;
+        rect.yMax = DISPLAY_HEIGHT-2;
+    }
+    draw_Rectangle(&rect);
+    return rect;
+}
+
+
+
+//================================================================================
+//==========MOVING SECTION========================================================
+//================================================================================
+
+//==========MOVE PADDLE PLAYER 1=============================================
 static void move_paddle_first_player(paddle_direction_t dir)
 {
     //TODO. For the joystick part only check for movement on the y axis(theoretically)
@@ -121,6 +284,7 @@ static void move_paddle_first_player(paddle_direction_t dir)
     draw_paddle(0);
 }
 
+//==========MOVE PADDLE PLAYER 2=============================================
 static void move_paddle_second_player(paddle_direction_t dir)
 {
     //TODO read from pong.c the button pressed then call this funct with appropriate parameter dir
@@ -152,6 +316,7 @@ static void move_paddle_second_player(paddle_direction_t dir)
 
 }
 
+//==========MOVE PADDLE PLAYER CPU===========================================
 static void move_paddle_ai()
 {
     int c = paddle[1].y + paddle[1].h /2;
@@ -225,6 +390,7 @@ static void move_paddle_ai()
     }
 }
 
+//==========MOVE BALL========================================================
 static void move_ball()
 {
     ball.x += ball.dx;
@@ -261,6 +427,7 @@ static void move_ball()
     }
 }
 
+//==========BALL DIRECTION===================================================
 static void change_ball_vector(int k){
 
     //Case of ball moving left
@@ -334,208 +501,11 @@ static void change_ball_vector(int k){
     }
 }
 
-static void draw_ball()
-{
-    //TODO draw the ball using the ball fields
-
-    Graphics_Rectangle ball_rect = get_Rectangle(ball.x,ball.y);
-    set_Foreground_Color(GRAPHICS_COLOR_RED);
-    fill_Rectangle(&ball_rect);
-    
-    //Check if necessary to do collision check part here
-}
-
-static void draw_paddle(int paddle_index)
-{
-    //TODO draw the paddle based on paddle index to identify the right paddle
-    Graphics_Rectangle paddle_rect = get_Rectangle(paddle[paddle_index].x,paddle[paddle_index].y);
-    set_Foreground_Color(GRAPHICS_COLOR_WHITE);
-    fill_Rectangle(&paddle_rect);
-    
-    //Check if necessary to do collision check part here
-}
-
-static void draw_pong_options(int step)
-{
-    int h_w = DISPLAY_WIDTH/2;
-    int offset = offsetOpt;
-    int j = 0;
-    for(j = 0; j<lengthOpt;j++)
-    {
-        draw_String_Centered(gameOptions[j],h_w,offset,false);
-        offset+=step;
-    }
-}
-
-/*
-static void draw_pong_menu()
-{
-    clear_Display();
-    int selected_curr = 0;
-    int step = get_Font_Height()*2;
-
-    int prev_sel = selected_curr;
-    gameState.buttonClicked = false;
-
-    Graphics_Rectangle prevRect;
-    prevRect.xMin = 0;
-    prevRect.xMax = 0;
-    prevRect.yMin = 0;
-    prevRect.yMax = 0;
-
-    while(!(gameState.buttonClicked))
-    {
-        readJoystickPosition();
-
-        if(gameState.joystickY < J_DOWN_TRESH)
-        {
-            selected_curr = min(selected_curr+1,lengthOpt-1);
-            gameState.joystickY = J_DOWN_TRESH+1;
-            int j;
-            for(j = 0;j<400000;j++){;}
-
-        }
-        else if(gameState.joystickY > J_UP_TRESH)
-        {
-            selected_curr = max(selected_curr-1,0);
-            gameState.joystickY = J_UP_TRESH-1;
-            int j;
-            for(j = 0;j<400000;j++){;}
-        }
-
-        if(gameState.buttonClicked)
-        {
-            gameState.buttonClicked = true;
-        }
-
-        draw_title_play_options();
-
-        if(selected_curr != prev_sel)
-        {
-            clean_rect(&prevRect);
-            prev_sel = selected_curr;
-        }
-        prevRect = draw_selection_rect(selected_curr,step);
-        draw_pong_options(step);
-    }
-
-    gameState.buttonClicked = false;
-    if (selected_curr == 0)
-    {
-        AI = true;
-    }
-    else
-    {
-        AI = false;
-    }
-}
-*/
 
 
-//Different version need to be tested
-static void draw_pong_menu()
-{
-    clear_Display();
-    int selected_curr = 0;
-    int step = get_Font_Height()*2;
-
-    int prev_sel = selected_curr;
-    gameState.buttonClicked = false;
-
-    Graphics_Rectangle prevRect;
-    prevRect.xMin = 0;
-    prevRect.xMax = 0;
-    prevRect.yMin = 0;
-    prevRect.yMax = 0;
-
-    while(!gameState.buttonClicked)
-    {
-        readJoystickPosition();
-
-        if(gameState.joystickY < J_DOWN_TRESH)
-        {
-            selected_curr = min(selected_curr+1,lengthOpt-1);
-            gameState.joystickY = J_DOWN_TRESH+1;
-            int j;
-            for(j = 0;j<400000;j++){;}
-        }
-        else if(gameState.joystickY > J_UP_TRESH)
-        {
-            selected_curr = max(selected_curr-1,0);
-            gameState.joystickY = J_UP_TRESH-1;
-            int j;
-            for(j = 0;j<400000;j++){;} // some busy waiting
-        }
-
-        draw_title_play_options();
-
-        if(selected_curr != prev_sel)
-        {
-            clean_rect(&prevRect); // clear the selection rectangle
-            prev_sel = selected_curr;
-        }
-        prevRect = draw_selection_rect(selected_curr, step); // draw new rectangle
-
-        draw_pong_options(step);
-
-        //joystick RIGHT (SELECT)
-        if(gameState.joystickX > J_RIGHT_TRESH + 1000 )
-        {
-            gameState.buttonClicked = true;
-            int j;
-            for(j = 0; j < 400000; j++) {;}
-        }
-    }
-
-    gameState.buttonClicked = false;
-        if (selected_curr == 0)
-        {
-            AI = true;
-        }
-        else
-        {
-            AI = false;
-        }
-}
-
-
-
-
-void draw_title_play_options()
-{
-    uint32_t prev_color = get_Foreground_Color();
-    set_Foreground_Color(GRAPHICS_COLOR_RED);
-    int w = DISPLAY_WIDTH;
-
-    const Graphics_Font *prev_font = get_Font();
-    //set_Font(titleFont);
-
-    draw_String_Centered("SELECT GAMEMODE",w/2,22,false);
-    set_Font(prev_font);
-    set_Foreground_Color_Translated(prev_color);
-}
-
-
-Graphics_Rectangle draw_selection_rect(const int sel, const int s)
-{
-    const int padding = 10;
-    Graphics_Rectangle rect;
-    rect.xMax = DISPLAY_WIDTH - padding;
-    rect.xMin = padding;
-    rect.yMin = offsetOpt + sel * s - s/2 ;
-    rect.yMax = offsetOpt + sel * s + s/2 ;
-
-    if(sel == lengthOpt)
-    {
-        rect.xMax = DISPLAY_WIDTH-1;
-        rect.xMin = DISPLAY_WIDTH-20;
-        rect.yMin = DISPLAY_HEIGHT-15;
-        rect.yMax = DISPLAY_HEIGHT-2;
-    }
-    draw_Rectangle(&rect);
-    return rect;
-}   
-
+//================================================================================
+//==========GAME STATE MACHINE====================================================
+//================================================================================
 bool pong(){
     //Clear display, set ball and paddles
 
@@ -557,6 +527,8 @@ bool pong(){
         //Game
         else if(state == 2)
         {
+            //clear_Display(); // clear display before generating the new frame
+
             int s = score_check();
             //Nobody has won yet; continue
             if(s == 0)
@@ -604,6 +576,10 @@ bool pong(){
                     }
                     draw_paddle(0);
                 }
+
+                //int d;
+                //for(d = 0; d < 10000; d++) {;} // busy-wait delay
+
             }
             else{
                 state = 3;

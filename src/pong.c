@@ -17,6 +17,7 @@ const char *const gameOptions[] = {"Player vs CPU","Player vs Player"};
 const int lengthOpt = 2;
 const int offsetOpt = 60;
 
+
 static void init()
 {
     ball.x = DISPLAY_WIDTH/2;
@@ -381,7 +382,7 @@ static void draw_pong_menu()
     prevRect.xMax = 0;
     prevRect.yMin = 0;
     prevRect.yMax = 0;
-    
+
     while(!(gameState.buttonClicked))
     {
         readJoystickPosition();
@@ -477,9 +478,12 @@ static void draw_pong_menu()
 
         draw_pong_options(step);
 
-        if (isButtonUpPressed())
+        //joystick RIGHT (SELECT)
+        if(gameState.joystickX > J_RIGHT_TRESH + 1000 )
         {
             gameState.buttonClicked = true;
+            int j;
+            for(j = 0; j < 400000; j++) {;}
         }
     }
 

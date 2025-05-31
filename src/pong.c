@@ -60,6 +60,7 @@ int score_check()
     }
     return winner;
 }
+
 int collision_check(ball_t b, paddle_t p)
 {
     int b_top,p_top;
@@ -258,6 +259,7 @@ static void move_ball()
         }
     }
 }
+
 static void change_ball_vector(int k){
 
     //Case of ball moving left
@@ -330,6 +332,7 @@ static void change_ball_vector(int k){
         }
     }
 }
+
 static void draw_ball()
 {
     //TODO draw the ball using the ball fields
@@ -350,6 +353,7 @@ static void draw_paddle(int paddle_index)
     
     //Check if necessary to do collision check part here
 }
+
 static void draw_pong_options(int step)
 {
     int h_w = DISPLAY_WIDTH/2;
@@ -361,6 +365,8 @@ static void draw_pong_options(int step)
         offset+=step;
     }
 }
+
+/*
 static void draw_pong_menu()
 {
     clear_Display();
@@ -395,10 +401,12 @@ static void draw_pong_menu()
             int j;
             for(j = 0;j<400000;j++){;}
         }
+
         if(gameState.buttonClicked)
         {
             gameState.buttonClicked = true;
         }
+
         draw_title_play_options();
 
         if(selected_curr != prev_sel)
@@ -408,9 +416,8 @@ static void draw_pong_menu()
         }
         prevRect = draw_selection_rect(selected_curr,step);
         draw_pong_options(step);
-
-
     }
+
     gameState.buttonClicked = false;
     if (selected_curr == 0)
     {
@@ -421,10 +428,10 @@ static void draw_pong_menu()
         AI = false;
     }
 }
-/*
+*/
 
-Different version need to be tested
 
+//Different version need to be tested
 static void draw_pong_menu()
 {
     clear_Display();
@@ -442,7 +449,7 @@ static void draw_pong_menu()
 
     while(!gameState.buttonClicked)
     {
-        readJoyStickPosition();
+        readJoystickPosition();
 
         if(gameState.joystickY < J_DOWN_TRESH)
         {
@@ -450,7 +457,6 @@ static void draw_pong_menu()
             gameState.joystickY = J_DOWN_TRESH+1;
             int j;
             for(j = 0;j<400000;j++){;}
-
         }
         else if(gameState.joystickY > J_UP_TRESH)
         {
@@ -459,18 +465,21 @@ static void draw_pong_menu()
             int j;
             for(j = 0;j<400000;j++){;} // some busy waiting
         }
+
         draw_title_play_options();
+
         if(selected_curr != prev_sel)
         {
             clean_rect(&prevRect); // clear the selection rectangle
             prev_sel = selected_curr;
         }
+        prevRect = draw_selection_rect(selected_curr, step); // draw new rectangle
 
-        draw_pong_option(step);
+        draw_pong_options(step);
 
         if (isButtonUpPressed())
         {
-            gameState.buttonState = true;
+            gameState.buttonClicked = true;
         }
     }
 
@@ -487,7 +496,7 @@ static void draw_pong_menu()
 
 
 
-*/
+
 void draw_title_play_options()
 {
     uint32_t prev_color = get_Foreground_Color();

@@ -3,7 +3,6 @@
 
 <h2>📋 TO-DO LIST (segnalate qui eventuali problemi o cose da fare)</h2>
 <ol>
-  <li>Far funzionare la schermata di selezione per pong (per ora si può accedere alla schermata di gamemode, ma non si può avviare il gioco)</li>
   <li>Far funzionare Pong (una volta che parte vedere se funziona, aggiustarlo e perfezionarlo) (per il momento pong ha massima priorità sul resto) </li>
   <li>Aggiungere schermata di END dove si dice chi ha vinto </li>
   <li>Trovare le librerie per far funzionare Buzzer e Led RGB e, se esistono, importarle nel progetto e capire come funzioano</li>

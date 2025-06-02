@@ -6,6 +6,8 @@
 #include <ti/devices/msp432p4xx/inc/msp432p401r.h>
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 #include <ti/devices/msp432p4xx/driverlib/flash.h>
+#include <ti/devices/msp432p4xx/driverlib/timer_a.h>
+#include <ti/devices/msp432p4xx/driverlib/cs.h>
 #include <ti/grlib/grlib.h>
 
 
@@ -35,6 +37,7 @@ void HW_Init()
     //buzzerInit();
     graphic_init();
     init_button();
+    timerInit();
     //_lightSensorInit();
     __enable_irq();
 }
@@ -132,6 +135,24 @@ void ADC_config()
     ADC14_enableConversion();
     */
 }
+
+
+void timerInit()
+{
+    //CLOCK configurtion   
+    CS->KEY=CS_KEY_VAL; // start clock change
+    CS->CTL1 = CS_CTL1_SELM_3; // select 3MHz clock
+    CS->KEY=0; // stop change operation
+
+    TIMER_A0->CTL = TIMER_A_CLOCKSOURCE_SMCLK | TIMER_A_CLOCKSOURCE_DIVIDER_1; // SELECT 3MHz clock source
+
+    TIMER_A0->CCR[0] = 1700; // Approximately a 5 ms period
+
+    TIMER_A0->CTL |= TIMER_A_CTL_IE; // enable interrupt
+    NVIC->ISER[0] = 1 << ((TA0_N_IRQn) & 31); // catch overflow
+}
+
+
 void ADC14_IRQHandler()
 {
     __disable_irq();
@@ -143,5 +164,17 @@ void ADC14_IRQHandler()
     {
         gameState.joystickX = ADC14->MEM[2];
     }
+    __enable_irq();
+}
+
+void TA0_0_IRQHandler()
+{
+    __disable_irq();
+    // clear flag
+    TIMER_A0->CCTL[0] &= (~TIMER_A_CCTLN_CCIFG);
+    TIMER_A0->CTL |= TIMER_A_STOP_MODE;
+
+    TIMER_A0->R=0;
+
     __enable_irq();
 }

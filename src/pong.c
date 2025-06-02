@@ -3,6 +3,7 @@
 #include "end_game.h"
 #include "HWdependent/display.h"
 #include "HWdependent/joystick.h"
+#include "HWdependent/timer.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -281,7 +282,7 @@ static void move_paddle_first_player(paddle_direction_t dir)
         }
         paddle[0].last_dir = DOWNp;
     }
-    draw_paddle(0);
+    //draw_paddle(0);
 }
 
 //==========MOVE PADDLE PLAYER 2=============================================
@@ -312,7 +313,7 @@ static void move_paddle_second_player(paddle_direction_t dir)
         }
         paddle[1].last_dir = DOWNp;
     } 
-    draw_paddle(1);
+    //draw_paddle(1);
 
 }
 
@@ -523,6 +524,16 @@ bool pong(){
         {
             draw_pong_menu();
             state = 2;
+
+            // Draw starting thing
+            startTimer();
+            draw_ball();
+            draw_paddle(0);
+            draw_paddle(1);
+            while (TIMER_A0->CCTL[0] & (TIMER_A_CCTLN_CCIFG)) // wait 20 ms
+            {
+            }
+            
         }
         //Game
         else if(state == 2)
@@ -536,11 +547,10 @@ bool pong(){
                 //Changes based on selected AI
                 if(AI)
                 {
+                    // Divide computation and drawing part
                     readJoystickPosition();
                     move_paddle_ai();
                     move_ball();
-                    draw_paddle(1);
-                    draw_ball();
                     if(gameState.joystickY < J_DOWN_TRESH)
                     {
                         move_paddle_first_player(DOWNp);
@@ -550,10 +560,16 @@ bool pong(){
                         move_paddle_first_player(UPp);
                     }
                     draw_paddle(0);
+                    draw_paddle(1);
+                    draw_ball();
+                    while (TIMER_A0->CCTL[0] & (TIMER_A_CCTLN_CCIFG)) // wait 5 ms has passed
+                    {
+                    }
 
                 }
                 else
                 {
+                    startTimer();
                     readJoystickPosition();
                     if(isButtonUpPressed())
                     {
@@ -564,8 +580,6 @@ bool pong(){
                         move_paddle_second_player(DOWNp);
                     }
                     move_ball();
-                    draw_paddle(1);
-                    draw_ball();
                     if(gameState.joystickY < J_DOWN_TRESH)
                     {
                         move_paddle_first_player(DOWNp);
@@ -575,6 +589,12 @@ bool pong(){
                         move_paddle_first_player(UPp);
                     }
                     draw_paddle(0);
+                    draw_paddle(1);
+                    draw_ball();
+
+                    while (TIMER_A0->CCTL[0] & (TIMER_A_CCTLN_CCIFG)) // wait 5 ms
+                    {   
+                    }       
                 }
 
                 //int d;

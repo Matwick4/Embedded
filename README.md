@@ -3,8 +3,11 @@
 
 <h2>📋 TO-DO LIST (segnalate qui eventuali problemi o cose da fare)</h2>
 <ol>
-  <li>Far funzionare Pong (una volta che parte vedere se funziona, aggiustarlo e perfezionarlo) (per il momento pong ha massima priorità sul resto) </li>
-  <li>Aggiungere schermata di END dove si dice chi ha vinto </li>
+  <li>Aggiustare problema velocità schermo / framerate / clear display </li>
+  <li>Aggiungere i comandi per poter pilotare il paddle sinistro con il joystick e il paddle destro con AI oppure pulsanti a destra</li>
+  <li>Aggiustare la funzione draw rectangle perchè disegna i paddle quadrati </li>
+  <li>Quando il gioco funziona, trovare il modo per far comparire il punteggio a schermo (in alto va bene) </li>
+  <li>Giunti alla schermata di fine gioco aggiungere comando per tornare al menù principale</li>
   <li>Trovare le librerie per far funzionare Buzzer e Led RGB e, se esistono, importarle nel progetto e capire come funzioano</li>
   <li>Aggiungere Buzzer (quando la pallina rimbalaza o il giocatore segna punto parte un suono)</li>
   <li>Aggiungere LED RGB (nel menu led arcobaleno che cicla i colori, nel gioco si colora di rosso se segna player left, di rosso se segna player right)</li>

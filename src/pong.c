@@ -6,7 +6,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+
 #define MAX_SCORE 5
+#define PADDLE_MARGIN 5
 
 //Globals
 static ball_t ball;
@@ -19,30 +21,27 @@ const int offsetOpt = 60;
 
 
 
-
-
-
 //================================================================================
 //==========INIT SECTION==========================================================
 //================================================================================
 static void init()
 {
-    ball.x = DISPLAY_WIDTH/2;
-    ball.y = DISPLAY_HEIGHT/2;
+    ball.x = DISPLAY_WIDTH / 2;
+    ball.y = DISPLAY_HEIGHT / 2;
     ball.dx = 1;
     ball.dy = 1;
     ball.h = 6;
     ball.w = 6;
 
-    paddle[0].x = 10;
-    paddle[0].y = DISPLAY_HEIGHT/2 - 15;
-    paddle[0].w = 6;
-    paddle[0].h = 30;
+    paddle[0].x = PADDLE_MARGIN;
+    paddle[0].y = DISPLAY_HEIGHT / 2 - 10;
+    paddle[0].w = 4;
+    paddle[0].h = 20;
 
-    paddle[1].x = DISPLAY_WIDTH - 4; //4 = 10-6(paddle width)
-    paddle[1].y = DISPLAY_HEIGHT/2 - 15;
-    paddle[1].w = 6;
-    paddle[1].h = 30;
+    paddle[1].x = DISPLAY_WIDTH - PADDLE_MARGIN - paddle[1].w;
+    paddle[1].y = DISPLAY_HEIGHT / 2 - 10;
+    paddle[1].w = 4;
+    paddle[1].h = 20;
 }
 
 
@@ -128,15 +127,17 @@ static void undraw_ball()
     clean_rect(&ball_rect);
 }
 
-
 //==========UNDRAW PADDLE======================================================
 static void undraw_paddle(int paddle_index)
 {
-    Graphics_Rectangle paddle_rect = get_Rectangle(paddle[paddle_index].x,paddle[paddle_index].y);
-    clean_rect(&paddle_rect);
+    Graphics_Rectangle rect;
+    rect.xMin = paddle[paddle_index].x;
+    rect.xMax = paddle[paddle_index].x + paddle[paddle_index].w - 1;
+    rect.yMin = paddle[paddle_index].y;
+    rect.yMax = paddle[paddle_index].y + paddle[paddle_index].h - 1;
+
+    clean_rect(&rect);
 }
-
-
 
 
 
@@ -152,6 +153,7 @@ static void move_paddle_first_player(paddle_direction_t dir)
 
     if(dir == UPp && paddle[0].last_dir != UPp)
     {
+
         if(paddle[0].y <= 0) {
 
             paddle[0].y = 0;
@@ -183,6 +185,7 @@ static void move_paddle_second_player(paddle_direction_t dir)
     //TODO read from pong.c the button pressed then call this funct with appropriate parameter dir
     if(dir == UPp && paddle[0].last_dir != UPp)
     {
+
         if(paddle[1].y <= 0) {
 
             paddle[1].y = 0;
@@ -415,12 +418,14 @@ static void draw_ball()
 //==========DRAW PADDLE======================================================
 static void draw_paddle(int paddle_index)
 {
-    //TODO draw the paddle based on paddle index to identify the right paddle
-    Graphics_Rectangle paddle_rect = get_Rectangle(paddle[paddle_index].x,paddle[paddle_index].y);
+    Graphics_Rectangle paddle_rect;
+    paddle_rect.xMin = paddle[paddle_index].x;
+    paddle_rect.xMax = paddle[paddle_index].x + paddle[paddle_index].w - 1;
+    paddle_rect.yMin = paddle[paddle_index].y;
+    paddle_rect.yMax = paddle[paddle_index].y + paddle[paddle_index].h - 1;
+
     set_Foreground_Color(GRAPHICS_COLOR_BLACK);
     fill_Rectangle(&paddle_rect);
-
-    //Check if necessary to do collision check part here
 }
 
 //==========DRAW OPTIONS=====================================================
@@ -566,6 +571,7 @@ bool pong(){
 
             state = 2;
         }
+
         //Game
         else if(state == 2)
         {
@@ -624,9 +630,6 @@ bool pong(){
                     }
                     draw_paddle(0);
                 }
-
-                //int d;
-                //for(d = 0; d < 10000; d++) {;} // busy-wait delay
 
             }
             else{

@@ -19,6 +19,9 @@ const int offsetOpt = 60;
 
 
 
+
+
+
 //================================================================================
 //==========INIT SECTION==========================================================
 //================================================================================
@@ -35,7 +38,7 @@ static void init()
     paddle[0].y = DISPLAY_HEIGHT/2 - 15;
     paddle[0].w = 6;
     paddle[0].h = 30;
-    
+
     paddle[1].x = DISPLAY_WIDTH - 4; //4 = 10-6(paddle width)
     paddle[1].y = DISPLAY_HEIGHT/2 - 15;
     paddle[1].w = 6;
@@ -55,7 +58,7 @@ int score_check()
     int j;
     for(j = 0; j<2; j++)
     {
-        
+
         if(score[j] == MAX_SCORE)
         {
             if(j == 0){
@@ -68,7 +71,7 @@ int score_check()
             score[1] = 0;
             
             return winner;
-        } 
+        }
     }
     return winner;
 }
@@ -99,6 +102,285 @@ int collision_check(ball_t b, paddle_t p)
         return 0;
     }
     return 1;
+}
+
+
+
+//================================================================================
+//==========CLEAR SECTION=========================================================
+//================================================================================
+
+//==========UNDRAW BALL======================================================
+static void undraw_ball()
+{
+    Graphics_Rectangle ball_rect = get_Rectangle(ball.x,ball.y);
+    clean_rect(&ball_rect);
+}
+
+
+//==========UNDRAW PADDLE======================================================
+static void undraw_paddle(int paddle_index)
+{
+    Graphics_Rectangle paddle_rect = get_Rectangle(paddle[paddle_index].x,paddle[paddle_index].y);
+    clean_rect(&paddle_rect);
+}
+
+
+
+
+
+//================================================================================
+//==========MOVING SECTION========================================================
+//================================================================================
+
+//==========MOVE PADDLE PLAYER 1=============================================
+static void move_paddle_first_player(paddle_direction_t dir)
+{
+    //TODO. For the joystick part only check for movement on the y axis(theoretically)
+    //Read input from joystick in the pong.c then draw the paddle based on value dir
+
+    if(dir == UPp && paddle[0].last_dir != UPp)
+    {
+        if(paddle[0].y <= 0) {
+
+            paddle[0].y = 0;
+
+        } else {
+
+            paddle[0].y -= 2; // TODO check if correct
+        }
+        paddle[0].last_dir = UPp;
+    }
+    else if(dir == DOWNp && paddle[0].last_dir != DOWNp)
+    {
+        if(paddle[0].y >= DISPLAY_HEIGHT - paddle[0].h) {
+
+            paddle[0].y = DISPLAY_HEIGHT - paddle[0].h;
+
+        } else {
+
+            paddle[0].y += 2;
+        }
+        paddle[0].last_dir = DOWNp;
+    }
+    draw_paddle(0);
+}
+
+//==========MOVE PADDLE PLAYER 2=============================================
+static void move_paddle_second_player(paddle_direction_t dir)
+{
+    //TODO read from pong.c the button pressed then call this funct with appropriate parameter dir
+    if(dir == UPp && paddle[0].last_dir != UPp)
+    {
+        if(paddle[1].y <= 0) {
+
+            paddle[1].y = 0;
+
+        } else {
+
+            paddle[1].y -= 2; // TODO check if correct
+        }
+        paddle[1].last_dir = UPp;
+    }
+    else if(dir == DOWNp && paddle[1].last_dir != DOWNp)
+    {
+        if(paddle[1].y >= DISPLAY_HEIGHT - paddle[1].h) {
+
+            paddle[1].y = DISPLAY_HEIGHT - paddle[1].h;
+
+        } else {
+
+            paddle[1].y += 2;
+        }
+        paddle[1].last_dir = DOWNp;
+    }
+    draw_paddle(1);
+
+}
+
+//==========MOVE PADDLE PLAYER CPU===========================================
+static void move_paddle_ai()
+{
+    int c = paddle[1].y + paddle[1].h /2;
+    int screen_c = DISPLAY_HEIGHT/2;
+    int ball_speed = abs(ball.dy);
+
+
+    //Case of ball moving towards the ai paddle(to the right)
+    if(ball.dx > 0)
+    {
+        if(c < screen_c)
+        {
+            paddle[1].y += ball_speed;
+        }
+        else
+        {
+            paddle[1].y -= ball_speed;
+        }
+    }
+    //Case of ball moving to the left
+    else
+    {
+        //The ball is moving UPp //TODO check if correct
+        if(ball.dy > 0)
+        {
+            if (ball.y > c) {
+
+                paddle[1].y += ball_speed;
+
+            } else {
+
+                paddle[1].y -= ball_speed;
+            }
+        }
+        //The ball is moving down //TODO check if correct
+        if(ball.dy < 0)
+        {
+            if (ball.dy < 0) {
+
+                if (ball.y < c) {
+                    
+                    paddle[1].y -= ball_speed;
+
+                } else {
+
+                    paddle[1].y += ball_speed;
+                }
+            }
+        }
+        //The ball is moving on a straight line
+        if(ball.dy == 0)
+        {
+            if (ball.y < c) {
+
+                paddle[1].y -= 2;
+
+            } else {
+
+                paddle[1].y += 2;
+            }
+        }
+    }
+    //Adjust the paddle if it arrives at the top/bottom of the screen
+    if(paddle[0].y < 0)
+    {
+        paddle[0].y = 0;
+    }
+    if(paddle[0].y + paddle[0].h > DISPLAY_HEIGHT)
+    {
+        paddle[0].y = DISPLAY_HEIGHT - paddle[0].h;
+    }
+}
+
+//==========MOVE BALL========================================================
+static void move_ball()
+{
+    ball.x += ball.dx;
+    ball.y += ball.dy;
+
+    //Check if a player scored a point and save it (Check if ball collides with screen edge on x axis)
+    if(ball.x < 0)
+    {
+        score[1] +=1;
+        init();
+    }
+
+    else if(ball.x > DISPLAY_WIDTH-10)
+    {
+        score[0] +=1;
+        init();
+    }
+
+    //Check for collision with screen edge on y axis and make it "bounce"
+
+    if(ball.y < 0 || ball.y > DISPLAY_HEIGHT-10){
+        ball.dy = -ball.dy;
+    }
+
+    //Check for paddle collisions
+    int k;
+    for(k = 0; k<2; k++){
+        
+        //Collision!
+        if(collision_check(ball,paddle[k]) == 1)
+        {
+            change_ball_vector(k);
+        }
+    }
+}
+
+//==========BALL DIRECTION===================================================
+static void change_ball_vector(int k){
+
+    //Case of ball moving left
+    if(ball.dx < 0)
+    {
+        ball.dx -=1;
+    }
+
+    //Case of ball moving right
+    else
+    {
+        ball.dx +=1;
+    }
+
+    //Changed direction to "bounce"
+    ball.dx = -ball.dx;
+
+    //Modify the ball.dy based on the point where it hit the paddle.
+    //If the value below (hit_position) is low it means that the ball hit
+    //the lowest part of the paddle and so it needs "to go UPp".
+    //If instead it's big it means the ball hit the highest part of the paddle
+    //and so the ball needs "to go down". Intermediate values are calculated as such.
+
+    int hit_position = (paddle[k].y + paddle[k].h) - ball.y;
+
+    if (hit_position >= 0 && hit_position < 5) {
+        ball.dy = 3;
+    }
+
+    else if (hit_position < 10)
+    {
+        ball.dy = 2;
+    }
+
+    else if (hit_position < 15)
+    {
+        ball.dy = 1;
+    }
+
+    else if (hit_position < 20)
+    {
+        ball.dy = 0;
+    }
+
+    else if (hit_position < 25)
+    {
+        ball.dy = -1;
+    }
+    else if (hit_position < 30)
+    {
+        ball.dy = -2;
+    }
+    else{
+        ball.dy = -3;
+    }
+
+    //Handle cases where ball can glitch
+    if (ball.dx > 0) {
+
+        if (ball.x < 2) {
+
+            ball.x = 2;
+        }
+
+    } else {
+
+        if (ball.x > DISPLAY_WIDTH - ball.w - 2) {
+
+            ball.x = DISPLAY_WIDTH - ball.w - 2;
+        }
+    }
 }
 
 
@@ -247,261 +529,6 @@ Graphics_Rectangle draw_selection_rect(const int sel, const int s)
 
 
 
-//================================================================================
-//==========MOVING SECTION========================================================
-//================================================================================
-
-//==========MOVE PADDLE PLAYER 1=============================================
-static void move_paddle_first_player(paddle_direction_t dir)
-{
-    //TODO. For the joystick part only check for movement on the y axis(theoretically)
-    //Read input from joystick in the pong.c then draw the paddle based on value dir
-    
-    if(dir == UPp && paddle[0].last_dir != UPp)
-    {
-        if(paddle[0].y <= 0) {
-
-            paddle[0].y = 0;
-
-        } else {
-
-            paddle[0].y -= 2; // TODO check if correct
-        }
-        paddle[0].last_dir = UPp;
-    }
-    else if(dir == DOWNp && paddle[0].last_dir != DOWNp)
-    {
-        if(paddle[0].y >= DISPLAY_HEIGHT - paddle[0].h) {
-
-            paddle[0].y = DISPLAY_HEIGHT - paddle[0].h;
-
-        } else {
-
-            paddle[0].y += 2;
-        }
-        paddle[0].last_dir = DOWNp;
-    }
-    draw_paddle(0);
-}
-
-//==========MOVE PADDLE PLAYER 2=============================================
-static void move_paddle_second_player(paddle_direction_t dir)
-{
-    //TODO read from pong.c the button pressed then call this funct with appropriate parameter dir
-    if(dir == UPp && paddle[0].last_dir != UPp)
-    {
-        if(paddle[1].y <= 0) {
-
-            paddle[1].y = 0;
-
-        } else {
-
-            paddle[1].y -= 2; // TODO check if correct
-        }
-        paddle[1].last_dir = UPp;
-    }
-    else if(dir == DOWNp && paddle[1].last_dir != DOWNp)
-    {
-        if(paddle[1].y >= DISPLAY_HEIGHT - paddle[1].h) {
-
-            paddle[1].y = DISPLAY_HEIGHT - paddle[1].h;
-
-        } else {
-
-            paddle[1].y += 2;
-        }
-        paddle[1].last_dir = DOWNp;
-    } 
-    draw_paddle(1);
-
-}
-
-//==========MOVE PADDLE PLAYER CPU===========================================
-static void move_paddle_ai()
-{
-    int c = paddle[1].y + paddle[1].h /2;
-    int screen_c = DISPLAY_HEIGHT/2;
-    int ball_speed = abs(ball.dy);
-
-
-    //Case of ball moving towards the ai paddle(to the right)
-    if(ball.dx > 0)
-    {
-        if(c < screen_c)
-        {
-            paddle[1].y += ball_speed;
-        }
-        else
-        {
-            paddle[1].y -= ball_speed;
-        }
-    }
-    //Case of ball moving to the left
-    else
-    {
-        //The ball is moving UPp //TODO check if correct
-        if(ball.dy > 0)
-        {
-            if (ball.y > c) { 
-
-                paddle[1].y += ball_speed;
-
-            } else {
-
-                paddle[1].y -= ball_speed;
-            }
-        }
-        //The ball is moving down //TODO check if correct
-        if(ball.dy < 0)
-        {
-            if (ball.dy < 0) {
-
-                if (ball.y < c) {
-                    
-                    paddle[1].y -= ball_speed;
-                
-                } else {
-                
-                    paddle[1].y += ball_speed;
-                }
-            }
-        }
-        //The ball is moving on a straight line
-        if(ball.dy == 0)
-        {
-            if (ball.y < c) { 
-
-                paddle[1].y -= 2;
-
-            } else {
-
-                paddle[1].y += 2;
-            }
-        }
-    }
-    //Adjust the paddle if it arrives at the top/bottom of the screen
-    if(paddle[0].y < 0)
-    {
-        paddle[0].y = 0;
-    }
-    if(paddle[0].y + paddle[0].h > DISPLAY_HEIGHT)
-    {
-        paddle[0].y = DISPLAY_HEIGHT - paddle[0].h;
-    }
-}
-
-//==========MOVE BALL========================================================
-static void move_ball()
-{
-    ball.x += ball.dx;
-    ball.y += ball.dy;
-
-    //Check if a player scored a point and save it (Check if ball collides with screen edge on x axis)
-    if(ball.x < 0)
-    {
-        score[1] +=1;
-        init();
-    }
-
-    else if(ball.x > DISPLAY_WIDTH-10)
-    {
-        score[0] +=1;
-        init();
-    }
-
-    //Check for collision with screen edge on y axis and make it "bounce"
-    
-    if(ball.y < 0 || ball.y > DISPLAY_HEIGHT-10){
-        ball.dy = -ball.dy;
-    }
-
-    //Check for paddle collisions
-    int k;
-    for(k = 0; k<2; k++){
-        
-        //Collision!
-        if(collision_check(ball,paddle[k]) == 1)
-        {
-            change_ball_vector(k); 
-        }
-    }
-}
-
-//==========BALL DIRECTION===================================================
-static void change_ball_vector(int k){
-
-    //Case of ball moving left
-    if(ball.dx < 0)
-    {
-        ball.dx -=1;
-    }
-    
-    //Case of ball moving right
-    else
-    {
-        ball.dx +=1;
-    }
-
-    //Changed direction to "bounce"
-    ball.dx = -ball.dx;
-
-    //Modify the ball.dy based on the point where it hit the paddle.
-    //If the value below (hit_position) is low it means that the ball hit
-    //the lowest part of the paddle and so it needs "to go UPp".
-    //If instead it's big it means the ball hit the highest part of the paddle
-    //and so the ball needs "to go down". Intermediate values are calculated as such.
-    
-    int hit_position = (paddle[k].y + paddle[k].h) - ball.y;
-
-    if (hit_position >= 0 && hit_position < 5) {
-        ball.dy = 3;
-    }
-
-    else if (hit_position < 10) 
-    {
-        ball.dy = 2;
-    }
-    
-    else if (hit_position < 15) 
-    {
-        ball.dy = 1;
-    }
-
-    else if (hit_position < 20)
-    {
-        ball.dy = 0;
-    }
-
-    else if (hit_position < 25) 
-    {
-        ball.dy = -1;
-    }
-    else if (hit_position < 30)
-    {
-        ball.dy = -2;
-    }
-    else{
-        ball.dy = -3;
-    }
-
-    //Handle cases where ball can glitch
-    if (ball.dx > 0) {
-
-        if (ball.x < 2) {
-        
-            ball.x = 2;
-        }
-        
-    } else {
-        
-        if (ball.x > DISPLAY_WIDTH - ball.w - 2) {
-        
-            ball.x = DISPLAY_WIDTH - ball.w - 2;
-        }
-    }
-}
-
-
 
 //================================================================================
 //==========GAME STATE MACHINE====================================================
@@ -527,7 +554,10 @@ bool pong(){
         //Game
         else if(state == 2)
         {
-            //clear_Display(); // clear display before generating the new frame
+            // clear ball and paddles before generating the new frame
+            undraw_ball();
+            undraw_paddle(0);
+            undraw_paddle(1);
 
             int s = score_check();
             //Nobody has won yet; continue

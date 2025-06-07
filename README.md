@@ -3,7 +3,6 @@
 
 <h2>📋 TO-DO LIST (segnalate qui eventuali problemi o cose da fare)</h2>
 <ol>
-  <li>Aggiustare problema velocità schermo / framerate / clear display </li>
   <li>Aggiungere i comandi per poter pilotare il paddle sinistro con il joystick e il paddle destro con AI oppure pulsanti a destra</li>
   <li>Aggiustare la funzione draw rectangle perchè disegna i paddle quadrati </li>
   <li>Quando il gioco funziona, trovare il modo per far comparire il punteggio a schermo (in alto va bene) </li>

@@ -48,6 +48,17 @@ static void init()
 
 
 //================================================================================
+//==========TIMER SECTION=========================================================
+//================================================================================
+void delay_ms(int ms) {
+    int i, j;
+    for(i = 0; i < ms; i++)
+        for(j = 0; j < 3000; j++);
+}
+
+
+
+//================================================================================
 //==========CHECK SECTION=========================================================
 //================================================================================
 
@@ -549,6 +560,10 @@ bool pong(){
         if(state == 1)
         {
             draw_pong_menu();
+
+            //clear menu before the actual game screen
+            clear_Display();
+
             state = 2;
         }
         //Game
@@ -558,6 +573,9 @@ bool pong(){
             undraw_ball();
             undraw_paddle(0);
             undraw_paddle(1);
+
+            //delay for 20fps (approximately)
+            delay_ms(40); //need to test the optimal value
 
             int s = score_check();
             //Nobody has won yet; continue

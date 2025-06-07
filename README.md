@@ -3,8 +3,9 @@
 
 <h2>📋 TO-DO LIST (segnalate qui eventuali problemi o cose da fare)</h2>
 <ol>
-  <li>Aggiungere i comandi per poter pilotare il paddle sinistro con il joystick e il paddle destro con AI oppure pulsanti a destra</li>
-  <li>Aggiustare la funzione draw rectangle perchè disegna i paddle quadrati </li>
+  <li>Capire dove mettere un clear display solo quando viene segnato un punto, così i paddle e la palla sono puliti prima che inizi un nuovo set</li>
+  <li>Fare in modo che quando inizia un nuovo set i paddle non vengano disegnati al centro, ma dove erano rimasti prima</li>
+  <li>Aggiungere i movimenti del player 2 sia con AI che con i pulsanti, per ora rimane fermo</li>
   <li>Quando il gioco funziona, trovare il modo per far comparire il punteggio a schermo (in alto va bene) </li>
   <li>Giunti alla schermata di fine gioco aggiungere comando per tornare al menù principale</li>
   <li>Trovare le librerie per far funzionare Buzzer e Led RGB e, se esistono, importarle nel progetto e capire come funzioano</li>

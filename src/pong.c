@@ -133,9 +133,10 @@ static void undraw_paddle(int paddle_index)
     Graphics_Rectangle rect;
     rect.xMin = paddle[paddle_index].x;
     rect.xMax = paddle[paddle_index].x + paddle[paddle_index].w - 1;
-    rect.yMin = paddle[paddle_index].y;
+    rect.yMin = paddle[paddle_index].y - 5;
     rect.yMax = paddle[paddle_index].y + paddle[paddle_index].h - 1;
 
+    set_Foreground_Color(GRAPHICS_COLOR_WHITE);
     clean_rect(&rect);
 }
 
@@ -148,34 +149,23 @@ static void undraw_paddle(int paddle_index)
 //==========MOVE PADDLE PLAYER 1=============================================
 static void move_paddle_first_player(paddle_direction_t dir)
 {
-    //TODO. For the joystick part only check for movement on the y axis(theoretically)
-    //Read input from joystick in the pong.c then draw the paddle based on value dir
+    undraw_paddle(0);
 
-    if(dir == UPp && paddle[0].last_dir != UPp)
+    if(dir == UPp)
     {
-
-        if(paddle[0].y <= 0) {
-
+        if(paddle[0].y > 0)
+            paddle[0].y -= 1;
+        else
             paddle[0].y = 0;
-
-        } else {
-
-            paddle[0].y -= 2; // TODO check if correct
-        }
-        paddle[0].last_dir = UPp;
     }
-    else if(dir == DOWNp && paddle[0].last_dir != DOWNp)
+    else if(dir == DOWNp)
     {
-        if(paddle[0].y >= DISPLAY_HEIGHT - paddle[0].h) {
-
+        if(paddle[0].y < DISPLAY_HEIGHT - paddle[0].h)
+            paddle[0].y += 1;
+        else
             paddle[0].y = DISPLAY_HEIGHT - paddle[0].h;
-
-        } else {
-
-            paddle[0].y += 2;
-        }
-        paddle[0].last_dir = DOWNp;
     }
+
     draw_paddle(0);
 }
 

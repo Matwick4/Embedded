@@ -268,79 +268,47 @@ static void move_ball()
     }
 }
 
-//==========BALL DIRECTION===================================================
+//==========BALL DIRECTION (normalized speed) ===============================
 static void change_ball_vector(int k){
+    // Always move horizontally at dx = ±1
+    ball.dx = (ball.dx > 0) ? -1 : 1;
 
-    //Case of ball moving left
-    if(ball.dx < 0)
-    {
-        ball.dx -=1;
-    }
-
-    //Case of ball moving right
-    else
-    {
-        ball.dx +=1;
-    }
-
-    //Changed direction to "bounce"
-    ball.dx = -ball.dx;
-
-    //Modify the ball.dy based on the point where it hit the paddle.
-    //If the value below (hit_position) is low it means that the ball hit
-    //the lowest part of the paddle and so it needs "to go UPp".
-    //If instead it's big it means the ball hit the highest part of the paddle
-    //and so the ball needs "to go down". Intermediate values are calculated as such.
-
+    // Calculate where the ball hit the paddle
     int hit_position = (paddle[k].y + paddle[k].h) - ball.y;
 
+    // Map hit position to vertical direction (only -1 or 1)
     if (hit_position >= 0 && hit_position < 5) {
-        ball.dy = 3;
-    }
-
-    else if (hit_position < 10)
-    {
-        ball.dy = 2;
-    }
-
-    else if (hit_position < 15)
-    {
         ball.dy = 1;
     }
-
-    else if (hit_position < 20)
-    {
+    else if (hit_position < 10) {
+        ball.dy = 1;
+    }
+    else if (hit_position < 15) {
         ball.dy = 0;
     }
-
-    else if (hit_position < 25)
-    {
+    else if (hit_position < 20) {
+        ball.dy = 0;
+    }
+    else if (hit_position < 25) {
         ball.dy = -1;
     }
-    else if (hit_position < 30)
-    {
-        ball.dy = -2;
-    }
-    else{
-        ball.dy = -3;
+    else {
+        ball.dy = -1;
     }
 
-    //Handle cases where ball can glitch
-    if (ball.dx > 0) {
+    // Prevent purely horizontal movement
+    if (ball.dy == 0) {
+        ball.dy = (rand() % 2 == 0) ? 1 : -1;
+    }
 
-        if (ball.x < 2) {
-
-            ball.x = 2;
-        }
-
-    } else {
-
-        if (ball.x > DISPLAY_WIDTH - ball.w - 2) {
-
-            ball.x = DISPLAY_WIDTH - ball.w - 2;
-        }
+    // Ensure ball stays within display bounds
+    if (ball.dx > 0 && ball.x < 2) {
+        ball.x = 2;
+    } else if (ball.dx < 0 && ball.x > DISPLAY_WIDTH - ball.w - 2) {
+        ball.x = DISPLAY_WIDTH - ball.w - 2;
     }
 }
+
 
 
 

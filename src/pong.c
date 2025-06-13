@@ -33,15 +33,16 @@ static void init()
     ball.h = 6;
     ball.w = 6;
 
-    paddle[0].x = PADDLE_MARGIN;
-    paddle[0].y = DISPLAY_HEIGHT / 2 - 10;
     paddle[0].w = 4;
     paddle[0].h = 20;
+    paddle[0].x = PADDLE_MARGIN;
+    paddle[0].y = DISPLAY_HEIGHT / 2 - 10;
 
-    paddle[1].x = DISPLAY_WIDTH - PADDLE_MARGIN - paddle[1].w;
-    paddle[1].y = DISPLAY_HEIGHT / 2 - 10;
+
     paddle[1].w = 4;
     paddle[1].h = 20;
+    paddle[1].x = DISPLAY_WIDTH - PADDLE_MARGIN - paddle[1].w;
+    paddle[1].y = DISPLAY_HEIGHT / 2 - paddle[1].h / 2;
 }
 
 
@@ -239,14 +240,14 @@ static void move_ball()
     if(ball.x < 0)
     {
         score[1] +=1;
-        undraw_ball();
+        clear_Display();
         init();
     }
 
     else if(ball.x > DISPLAY_WIDTH-10)
     {
         score[0] +=1;
-        undraw_ball();
+        clear_Display();
         init();
     }
 

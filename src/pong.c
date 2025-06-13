@@ -240,6 +240,7 @@ static void move_ball()
     if(ball.x < 0)
     {
         score[1] +=1;
+        delay_ms(1000);
         clear_Display();
         init();
     }
@@ -247,6 +248,7 @@ static void move_ball()
     else if(ball.x > DISPLAY_WIDTH-10)
     {
         score[0] +=1;
+        delay_ms(1000);
         clear_Display();
         init();
     }

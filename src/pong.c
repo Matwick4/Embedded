@@ -133,7 +133,7 @@ static void undraw_paddle(int paddle_index)
     Graphics_Rectangle rect;
     rect.xMin = paddle[paddle_index].x;
     rect.xMax = paddle[paddle_index].x + paddle[paddle_index].w - 1;
-    rect.yMin = paddle[paddle_index].y - 5;
+    rect.yMin = paddle[paddle_index].y;
     rect.yMax = paddle[paddle_index].y + paddle[paddle_index].h - 1;
 
     set_Foreground_Color(GRAPHICS_COLOR_WHITE);
@@ -205,74 +205,27 @@ static void move_paddle_second_player(paddle_direction_t dir)
 //==========MOVE PADDLE PLAYER CPU===========================================
 static void move_paddle_ai()
 {
-    int c = paddle[1].y + paddle[1].h /2;
-    int screen_c = DISPLAY_HEIGHT/2;
-    int ball_speed = abs(ball.dy);
+    // Calculate the vertical center of the CPU paddle
+    int paddle_center = paddle[1].y + paddle[1].h / 2;
 
-
-    //Case of ball moving towards the ai paddle(to the right)
-    if(ball.dx > 0)
+    // Follow the ball: move the paddle towards the ball's y-position
+    if(ball.y < paddle_center)
     {
-        if(c < screen_c)
-        {
-            paddle[1].y += ball_speed;
-        }
-        else
-        {
-            paddle[1].y -= ball_speed;
-        }
+        paddle[1].y -= 1; // Move up
     }
-    //Case of ball moving to the left
-    else
+    else if(ball.y > paddle_center)
     {
-        //The ball is moving UPp //TODO check if correct
-        if(ball.dy > 0)
-        {
-            if (ball.y > c) {
-
-                paddle[1].y += ball_speed;
-
-            } else {
-
-                paddle[1].y -= ball_speed;
-            }
-        }
-        //The ball is moving down //TODO check if correct
-        if(ball.dy < 0)
-        {
-            if (ball.dy < 0) {
-
-                if (ball.y < c) {
-                    
-                    paddle[1].y -= ball_speed;
-
-                } else {
-
-                    paddle[1].y += ball_speed;
-                }
-            }
-        }
-        //The ball is moving on a straight line
-        if(ball.dy == 0)
-        {
-            if (ball.y < c) {
-
-                paddle[1].y -= 2;
-
-            } else {
-
-                paddle[1].y += 2;
-            }
-        }
+        paddle[1].y += 1; // Move down
     }
-    //Adjust the paddle if it arrives at the top/bottom of the screen
-    if(paddle[0].y < 0)
+
+    // Clamp the paddle position to stay within screen bounds
+    if(paddle[1].y < 0)
     {
-        paddle[0].y = 0;
+        paddle[1].y = 0;
     }
-    if(paddle[0].y + paddle[0].h > DISPLAY_HEIGHT)
+    else if(paddle[1].y + paddle[1].h > DISPLAY_HEIGHT)
     {
-        paddle[0].y = DISPLAY_HEIGHT - paddle[0].h;
+        paddle[1].y = DISPLAY_HEIGHT - paddle[1].h;
     }
 }
 
@@ -286,12 +239,14 @@ static void move_ball()
     if(ball.x < 0)
     {
         score[1] +=1;
+        undraw_ball();
         init();
     }
 
     else if(ball.x > DISPLAY_WIDTH-10)
     {
         score[0] +=1;
+        undraw_ball();
         init();
     }
 

@@ -2,28 +2,43 @@
 #include "state.h"
 #include "HWdependent/display.h"
 
-void show_end_game_screen(bool won,int player){
-    
-    if(player == -1)
-    {
-        clear_Display();
-        draw_String_Centered((won? "Congrats! Yow Won": "Sorry! You lost!"),DISPLAY_WIDTH/2,20,false);
-        //TODO vedere se aggiungere buzzer. Andrebbe messo include relativo nel .h
-        draw_String_Centered("Press S1 to continue",DISPLAY_WIDTH/2,80,false);
+void show_end_game_screen(bool won, int player) {
+    // Clear the screen
+    clear_Display();
+
+    // Save current color and font settings
+    uint32_t prev_color = get_Foreground_Color();
+    const Graphics_Font *prev_font = get_Font();
+
+    // Set black color for the text
+    set_Foreground_Color(GRAPHICS_COLOR_BLACK);
+
+    // Optional: set a larger font if available
+    // set_Font(bigFont);
+
+    const char* message;
+
+    // Determine message based on game mode and result
+    if (player == -1) {
+        // Single player mode
+        message = won ? "Congrats! You Won" : "Sorry! You Lost!";
+    } else if (won) {
+        // Multiplayer mode – someone won
+        message = (player == 1) ? "Player 1 Won!" : "Player 2 Won!";
+    } else {
+        // Multiplayer mode – someone lost
+        message = (player == 1) ? "Player 2 Lost!" : "Player 1 Lost!";
     }
-    else
-    {
-        if(player == 1){
-            clear_Display();
-            draw_String_Centered((won? "Congrats! Player 1 Won" : "Sorry Player 2 lost"),DISPLAY_WIDTH/2,20,false);
-            //TODO vedere se aggiungere buzzer. Andrebbe messo include relativo nel .h
-            draw_String_Centered("Press S1 to continue",DISPLAY_WIDTH/2,80,false);
-        }
-        else{
-            clear_Display();
-            draw_String_Centered((won? "Congrats! Player 2 Won" :"Sorry Player 2 lost"),DISPLAY_WIDTH/2,20,false);
-            //TODO vedere se aggiungere buzzer. Andrebbe messo include relativo nel .h
-            draw_String_Centered("Press S1 to continue",DISPLAY_WIDTH/2,80,false);
-        }
-    }
+
+    // Draw the main message centered on the screen
+    draw_String_Centered(message, DISPLAY_WIDTH / 2, 20, false);
+
+    // Draw the instruction to continue
+    draw_String_Centered("Select RIGHT", DISPLAY_WIDTH / 2, 80, false);
+    draw_String_Centered("to continue", DISPLAY_WIDTH / 2, 90, false);
+
+    // Restore previous font and color
+    set_Font(prev_font);
+    set_Foreground_Color_Translated(prev_color);
 }
+

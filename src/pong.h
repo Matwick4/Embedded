@@ -85,4 +85,8 @@ void clean_rect(const Graphics_Rectangle *rect);
 Graphics_Rectangle draw_selection_rect(const int,const int);
 
 
+//Draw score of the two players
+void draw_score();
+
+
 #endif

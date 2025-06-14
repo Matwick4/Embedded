@@ -1,13 +1,14 @@
 #include "pong.h"
 #include "state.h"
 #include "end_game.h"
+#include "menu.h"
 #include "HWdependent/display.h"
 #include "HWdependent/joystick.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MAX_SCORE 5
+#define MAX_SCORE 3
 #define PADDLE_MARGIN 5
 
 //Globals
@@ -18,6 +19,7 @@ static bool AI = false;
 const char *const gameOptions[] = {"Player vs CPU","Player vs Player"};
 const int lengthOpt = 2;
 const int offsetOpt = 60;
+const int EXTRA_THRESHOLD = 1000;    //joystick drifts on the right so we need an extra threshold
 
 void draw_score();  // Function prototype
 
@@ -508,8 +510,8 @@ Graphics_Rectangle draw_selection_rect(const int sel, const int s)
 //================================================================================
 //==========GAME STATE MACHINE====================================================
 //================================================================================
-bool pong(){
-    //Clear display, set ball and paddles
+bool pong() {
+    // Clear the display and initialize ball and paddles
     clear_Display();
     init();
 
@@ -519,86 +521,102 @@ bool pong(){
 
     while(quit == 0)
     {
-        //Show menu (decide whether play against AI or other player)
+        // State 1: Show menu
         if(state == 1)
         {
             draw_pong_menu();
 
-            //clear menu before the actual game screen
+            // Clear menu before entering the game
             clear_Display();
 
             state = 2;
         }
 
-        //Game
+        // State 2: Game running
         else if(state == 2)
         {
-            // clear ball and paddles before generating the new frame
+            // Clear previous frame
             undraw_ball();
             undraw_paddle(0);
             undraw_paddle(1);
-
-            //delay for 20fps (approximately)
-            delay_ms(40); //need to test the optimal value
+            delay_ms(40); // for ~20 fps
 
             int s = score_check();
-            //Nobody has won yet; continue
-            if(s == 0)
+
+            if(s == 0) // No one has won yet
             {
-                //Changes based on selected AI
-                if(AI)
+                if(AI) // Player vs CPU
                 {
                     readJoystickPosition();
                     move_paddle_ai();
                     move_ball();
                     draw_paddle(1);
                     draw_ball();
-                    if(gameState.joystickY < J_DOWN_TRESH)
-                    {
-                        move_paddle_first_player(DOWNp);
-                    }
-                    else if(gameState.joystickY > J_UP_TRESH)
-                    {
-                        move_paddle_first_player(UPp);
-                    }
-                    draw_paddle(0);
 
+                    if(gameState.joystickY < J_DOWN_TRESH)
+                        move_paddle_first_player(DOWNp);
+                    else if(gameState.joystickY > J_UP_TRESH)
+                        move_paddle_first_player(UPp);
+
+                    draw_paddle(0);
                 }
-                else
+                else // Player vs Player
                 {
                     readJoystickPosition();
+
                     if(isButtonUpPressed())
-                    {
                         move_paddle_second_player(UPp);
-                    }
                     else if(isButtonDownPressed())
-                    {
                         move_paddle_second_player(DOWNp);
-                    }
+
                     move_ball();
                     draw_paddle(1);
                     draw_ball();
+
                     if(gameState.joystickY < J_DOWN_TRESH)
-                    {
                         move_paddle_first_player(DOWNp);
-                    }
                     else if(gameState.joystickY > J_UP_TRESH)
-                    {
                         move_paddle_first_player(UPp);
-                    }
+
                     draw_paddle(0);
                 }
-
             }
-            else{
+            else // Someone has won -> go to state 3
+            {
                 state = 3;
             }
         }
-        //Game over TODO
+
+        // State 3: End game screen
         else if(state == 3)
         {
-            quit = 1;
+            int winner = score_check(); // returns 1 if player 1 won, 2 if player 2 or CPU won
+
+            if(AI) {
+                // Single player mode: 1 = player won, 2 = CPU won
+                show_end_game_screen(winner == 1, -1); // -1 means single player mode
+            } else {
+                // Multiplayer mode
+                show_end_game_screen(true, winner);
+            }
+
+            // Wait until the player moves the joystick to the RIGHT to continue
+            while(1)
+            {
+                readJoystickPosition();
+                if(gameState.joystickX > J_RIGHT_TRESH + EXTRA_THRESHOLD)
+                {
+                    // Debounce: consume the input and exit loop
+                    gameState.joystickX = J_RIGHT_TRESH - 1;
+                    delay_ms(200); // optional debounce delay
+                    break;
+                }
+                delay_ms(20);
+            }
+
+            quit = 1; // Exit main loop
         }
     }
-    return score_check();
+
+    return score_check(); // Return the winner
 }

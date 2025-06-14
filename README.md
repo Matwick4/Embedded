@@ -3,9 +3,8 @@
 
 <h2>📋 TO-DO LIST (segnalate qui eventuali problemi o cose da fare)</h2>
 <ol>
-  <li>Aggiungere i movimenti del player 2 sia con i pulsanti, per ora rimane fermo (mentre la CPU funziona)</li>
-  <li>Trovare il modo per fare apparire il punteggio a schermo. Idea: per evitare che il punteggio sia ingombrante e occupi troppo spazio facciamo in modo che quando un player segna un punto nella schrmata di pausa di 1 secondo che c'è tra un set e l'altro invece di tenere lo schermo fermo mostriamo il punteggio delle due parti</li>
-  <li>Giunti alla schermata di fine gioco aggiungere comando per tornare al menù principale</li>
+  <li>Aggiungere i movimenti del player 2 con i pulsanti; bisogna capire da che libreria si prendono le funzioni per far funzionare i 2 pulsanti destri della scheda</li>
+  <li>Fare in modo che dalla schermata di fine facendo RIGHT con il joystick si possa tornare al menu di partenza</li>
   <li>Trovare le librerie per far funzionare Buzzer e Led RGB e, se esistono, importarle nel progetto e capire come funzioano</li>
   <li>Aggiungere Buzzer (quando la pallina rimbalaza o il giocatore segna punto parte un suono)</li>
   <li>Aggiungere LED RGB (nel menu led arcobaleno che cicla i colori, nel gioco si colora di rosso se segna player left, di rosso se segna player right)</li>
@@ -19,38 +18,30 @@ This repository contains the final project for the course <em>Embedded Software 
 <br>
 
 <h2> 🎮 What this project is about?</h2>
-> *Note: This is a preliminary description and may be updated upon project completion.*
+This project aims to recreate a mini portable retro-style game console using the MSP432P401R development board by Texas Instruments. The board is well-suited for this purpose thanks to its integrated peripherals, which include:
 
-This project aims to recreate a **mini portable retro-style game console** using the **MSP432P401R development board** by Texas Instruments. The board is well-suited for this purpose thanks to its integrated peripherals, which include:
+- A display  
+- Buttons  
+- An analog stick  
+- A buzzer  
+- On-board LEDs  
 
-- A display
-- Buttons
-- An analog stick
-- A buzzer
-- On-board LEDs
-
-The console runs two classic arcade-inspired games: **Pong** and **Snake**, taking cues from the iconic style and simplicity of 1970s arcade machines.
+The console is dedicated to recreating **Pong**, an arcade-inspired game that captures the iconic style and simplicity of 1970s gaming.
 <br>
 <br>
 
 ### 🕹️ Pong
 Pong leverages both the left analog stick and the two right-side buttons on the MSP432 board. The paddle (i.e., the vertical bar that players move to hit the ball) can be controlled using either input method, supporting intuitive "UP" and "DOWN" movements.
 
-- **Single Player Mode**: Play against a basic CPU opponent.
-- **Two Player Mode**: Challenge a friend using shared controls.
+- **Single Player Mode**: Play against a basic CPU opponent.  
+- **Two Player Mode**: Challenge a friend using shared controls.  
 
 This setup allows for both accessible gameplay and a faithful recreation of the original arcade experience.
-<br>
-<br>
-
-### 🐍 Snake
-Snake fully utilizes the analog stick, enabling smooth movement in all four cardinal directions. The implementation showcases the potential of the MSP432 board’s input capabilities.
-
----
 
 This project combines embedded systems programming with retro game design to deliver a fun and educational hands-on application of the MSP432 platform.
 <br>
 <br>
+
 
 <h2>⚙️ Hardware Platform </h2>
 This project has been developed for the MSP432P401R board and the BoosterPack MKII by Texas Instruments.<br>

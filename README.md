@@ -4,7 +4,7 @@
 <h2>📋 TO-DO LIST (segnalate qui eventuali problemi o cose da fare)</h2>
 <ol>
   <li>Aggiungere i movimenti del player 2 sia con i pulsanti, per ora rimane fermo (mentre la CPU funziona)</li>
-  <li>Quando il gioco funziona, trovare il modo per far comparire il punteggio a schermo (in alto va bene) </li>
+  <li>Trovare il modo per fare apparire il punteggio a schermo. Idea: per evitare che il punteggio sia ingombrante e occupi troppo spazio facciamo in modo che quando un player segna un punto nella schrmata di pausa di 1 secondo che c'è tra un set e l'altro invece di tenere lo schermo fermo mostriamo il punteggio delle due parti</li>
   <li>Giunti alla schermata di fine gioco aggiungere comando per tornare al menù principale</li>
   <li>Trovare le librerie per far funzionare Buzzer e Led RGB e, se esistono, importarle nel progetto e capire come funzioano</li>
   <li>Aggiungere Buzzer (quando la pallina rimbalaza o il giocatore segna punto parte un suono)</li>

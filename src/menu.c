@@ -1,17 +1,18 @@
-#include "src/state.h"
-#include "src/menu.h"
+#include "state.h"
+#include "menu.h"
 #include <stdio.h>
 #include "HWdependent/joystick.h"
 #include "HWdependent/display.h"
+#include "HWdependent/display.h"
 
-const char *const game_opt[] = {"Pong","Snake"};
-const int lengthOptMenu = 2;
-const int offsetOptMenu = 60;
+const char *const game_opt[] = {"RIGHT to start"};
+const int lengthOptMenu = 1;
+const int offsetOptMenu = 65;
 
 //variables to be certain that joystick is centered
 int joystickX_center = 0;
 int joystickY_center = 0;
-//joystick drifts on the right so we need a new threshold
+//joystick drifts on the right so we need an extra threshold
 const int JOYSTICK_THRESHOLD = 1000;
 
 
@@ -50,15 +51,16 @@ void show_main_menu(){
             if(gameState.joystickY < J_DOWN_TRESH)
             {
                 selected_curr = min(selected_curr+1,lengthOptMenu-1);
-                gameState.joystickY = J_DOWN_TRESH+1;
+                gameState.joystickY = J_DOWN_TRESH + 1;
                 int j;
                 for(j = 0;j<400000;j++){;}
             }
 
+            //joystick UP
             else if(gameState.joystickY > J_UP_TRESH)
             {
                 selected_curr = max(selected_curr-1,0);
-                gameState.joystickY = J_UP_TRESH-1;
+                gameState.joystickY = J_UP_TRESH - 1;
                 int j;
                 for(j = 0;j<400000;j++){;}
             }
@@ -118,10 +120,11 @@ void show_title(){
     const Graphics_Font *prevFont = get_Font();
     const Graphics_Font *titleFont = &g_sFontCm20b;
     set_Font(titleFont);
-    draw_String_Centered("Games",w/2,22,false);
+    draw_String_Centered("PONG", w/2, 22, false);
     set_Font(prevFont);
     set_Foreground_Color_Translated(pc);
 }
+
 void show_games_options(int s){
     int yOffs = offsetOptMenu;
     int hwidth = DISPLAY_WIDTH/2;
@@ -135,7 +138,7 @@ void show_games_options(int s){
 
 Graphics_Rectangle draw_selection_rectangle(const int sel, const int s)
 {
-       const int padding = 20;
+       const int padding = 10;
        Graphics_Rectangle rect;
        rect.xMax = DISPLAY_WIDTH - padding;
        rect.xMin = padding;

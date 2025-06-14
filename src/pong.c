@@ -19,6 +19,8 @@ const char *const gameOptions[] = {"Player vs CPU","Player vs Player"};
 const int lengthOpt = 2;
 const int offsetOpt = 60;
 
+void draw_score();  // Function prototype
+
 
 
 //================================================================================
@@ -251,18 +253,22 @@ static void move_ball()
     //Check if a player scored a point and save it (Check if ball collides with screen edge on x axis)
     if(ball.x < 0)
     {
-        score[1] +=1;
-        delay_ms(1000);
-        clear_Display();
-        init();
+        score[1] +=1;       // update score
+        clear_Display();    //clear display
+        draw_score();       //show score
+        delay_ms(1000);     //wait 1s
+        clear_Display();    //clear display
+        init();             //init the game
     }
 
     else if(ball.x > DISPLAY_WIDTH-10)
     {
         score[0] +=1;
+        clear_Display();
+        draw_score();
         delay_ms(1000);
         clear_Display();
-        init();
+        init();;
     }
 
     //Check for collision with screen edge on y axis and make it "bounce"
@@ -356,6 +362,32 @@ static void draw_paddle(int paddle_index)
     fill_Rectangle(&paddle_rect);
 }
 
+//==========DRAW SCORE======================================================
+void draw_score()
+{
+    // Builds the score string
+    char score_str[10];
+    sprintf(score_str, "%d - %d", score[0], score[1]);
+
+    // Clears the screen
+    Graphics_Rectangle full = {0, 0, DISPLAY_WIDTH - 1, DISPLAY_HEIGHT - 1};
+    clean_rect(&full);
+
+    // Set color and font
+    uint32_t prev_color = get_Foreground_Color();
+    const Graphics_Font *prev_font = get_Font();
+
+    set_Foreground_Color(GRAPHICS_COLOR_BLACK);
+
+    // Draw the centered score
+    draw_String_Centered(score_str, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, false);
+
+    // Restore the previous font and color
+    set_Font(prev_font);
+    set_Foreground_Color_Translated(prev_color);
+}
+
+
 //==========DRAW OPTIONS=====================================================
 static void draw_pong_options(int step)
 {
@@ -443,7 +475,6 @@ void draw_title_play_options()
     int w = DISPLAY_WIDTH;
 
     const Graphics_Font *prev_font = get_Font();
-    //set_Font(titleFont);
 
     draw_String_Centered("SELECT GAMEMODE",w/2,22,false);
     set_Font(prev_font);

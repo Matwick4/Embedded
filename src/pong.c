@@ -21,8 +21,6 @@ const int lengthOpt = 2;
 const int offsetOpt = 60;
 const int EXTRA_THRESHOLD = 1000;    //joystick drifts on the right so we need an extra threshold
 
-void draw_score();  // Function prototype
-
 
 
 //================================================================================

@@ -26,19 +26,31 @@ const int offsetOpt = 60;
 //================================================================================
 static void init()
 {
+    // Initial position in the center
     ball.x = DISPLAY_WIDTH / 2;
     ball.y = DISPLAY_HEIGHT / 2;
-    ball.dx = 1;
-    ball.dy = 1;
-    ball.h = 6;
     ball.w = 6;
+    ball.h = 6;
 
+    // Random horizontal direction: -1 or 1
+    ball.dx = (rand() % 2 == 0) ? -1 : 1;
+
+    // Random vertical  direction: -1 or 1
+    int r = rand() % 3; // 0, 1 o 2
+    if (r == 0)
+        ball.dy = -1;
+    else if (r == 1)
+        ball.dy = 0;
+    else
+        ball.dy = 1;
+
+    // Initialize left paddle
     paddle[0].w = 4;
     paddle[0].h = 20;
     paddle[0].x = PADDLE_MARGIN;
-    paddle[0].y = DISPLAY_HEIGHT / 2 - 10;
+    paddle[0].y = DISPLAY_HEIGHT / 2 - paddle[0].h / 2;
 
-
+    // Initialize right paddle
     paddle[1].w = 4;
     paddle[1].h = 20;
     paddle[1].x = DISPLAY_WIDTH - PADDLE_MARGIN - paddle[1].w;
@@ -467,7 +479,6 @@ Graphics_Rectangle draw_selection_rect(const int sel, const int s)
 //================================================================================
 bool pong(){
     //Clear display, set ball and paddles
-
     clear_Display();
     init();
 

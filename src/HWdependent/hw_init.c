@@ -59,8 +59,27 @@ void graphic_init()
 
 void init_button()
 {
+    // S1 init J4.33 -> P1.1
+    P1->SEL0 &= ~BIT1;
+    P1->SEL1 &= ~BIT1;
+    P1->DIR &= ~BIT1;
+    P1->OUT |= BIT1;
+    P1->REN |= BIT1;
+    P1->IFG &= ~BIT1;
+    P1->IES |= BIT1;
+    P1->IE &= ~BIT1;
 
-    GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P1, GPIO_PIN1 | GPIO_PIN4);
+    // S2 init J4.32 -> P1.4
+
+    P1->SEL0 &= ~BIT4;
+    P1->SEL1 &= ~BIT4;
+    P1->DIR &= ~BIT4;
+    P1->OUT |= BIT4;
+    P1->REN |= BIT4;
+    P4->IFG &= ~BIT4;
+    P4->IES |= BIT4;
+    P4->IE &= ~BIT4;
+    
 }
 
 void ADC_config()
@@ -145,3 +164,5 @@ void ADC14_IRQHandler()
     }
     __enable_irq();
 }
+
+// Here in the IRQ we check the variable

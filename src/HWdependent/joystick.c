@@ -8,12 +8,12 @@ void readJoystickPosition()
 
 bool isButtonUpPressed()
 {
-    bool res = GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN1) == GPIO_INPUT_PIN_LOW;
-    return (res);
+   bool res = (P1->IN & BIT1);
+   return res;
 }
 
 bool isButtonDownPressed()
 {
-    bool res = GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN4) == GPIO_INPUT_PIN_LOW;
-    return (res);
+   bool res = (P1->IN & BIT4);
+   return res;
 }

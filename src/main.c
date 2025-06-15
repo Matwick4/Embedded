@@ -26,6 +26,7 @@ int main(void)
             case 0: 
                 winner_pong = pong();
                 show_end_game_screen(true,winner_pong);
+                
             break;
 
             case 1: 

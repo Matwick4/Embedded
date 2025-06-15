@@ -1,6 +1,7 @@
 #include "end_game.h"
 #include "state.h"
 #include "HWdependent/display.h"
+#include "HWdependent/joystick.h"   
 
 void show_end_game_screen(bool won, int player) {
     // Clear the screen
@@ -40,5 +41,24 @@ void show_end_game_screen(bool won, int player) {
     // Restore previous font and color
     set_Font(prev_font);
     set_Foreground_Color_Translated(prev_color);
+
+    // busy waiting for the right on the joystick
+
+    bool goToMainMenu=false;
+    while (!goToMainMenu)
+    {
+        readJoystickPosition();
+        //Horizontal movement
+        int left = (gameState.joystickX < J_LEFT_TRESH) ? (J_LEFT_TRESH - gameState.joystickX) : 0;
+        int right = (gameState.joystickX > J_RIGHT_TRESH) ? (gameState.joystickX - J_RIGHT_TRESH) : 0;
+        //Vertical movement
+        int down = (gameState.joystickY < J_DOWN_TRESH) ? (J_DOWN_TRESH - gameState.joystickY) : 0;
+        int up = (gameState.joystickY > J_UP_TRESH) ? (gameState.joystickY - J_UP_TRESH) : 0;
+
+        if( (right > up) & (right > down))
+            gameState.game_selected= -1;
+
+    }
+    
 }
 

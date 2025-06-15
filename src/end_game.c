@@ -57,6 +57,7 @@ void show_end_game_screen(bool won, int player) {
 
         if( (right > up) & (right > down))
             gameState.game_selected= -1;
+            goToMainMenu = true;
 
     }
     

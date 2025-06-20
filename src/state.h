@@ -32,6 +32,8 @@ typedef struct
 {
     int game_selected;
     bool buttonClicked;
+    bool buttonUpPressed;
+    bool buttonDownPressed;
     buttonState buttonstate;
     uint16_t joystickX;
     uint16_t joystickY;

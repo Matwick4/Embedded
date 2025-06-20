@@ -59,9 +59,9 @@ inline int chooseSnakeLength()
                 sprintf(s, "%3d",opt[sel]);
                 draw_String_Centered((int8_t *)s,DISPLAY_WIDTH/2,50,false);
             }
-            if(isButtonUpPressed()){
-                gameState.buttonClicked = true;
-            }
+           // if(isButtonUpPressed()){
+           //     gameState.buttonClicked = true;
+          //  }
         }
         redraw = false;
         int i;

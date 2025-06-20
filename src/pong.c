@@ -188,32 +188,24 @@ static void move_paddle_first_player(paddle_direction_t dir)
 static void move_paddle_second_player(paddle_direction_t dir)
 {
     //TODO read from pong.c the button pressed then call this funct with appropriate parameter dir
-    if(dir == UPp && paddle[0].last_dir != UPp)
-    {
+    undraw_paddle(1);
 
-        if(paddle[1].y <= 0) {
-
-            paddle[1].y = 0;
-
-        } else {
-
-            paddle[1].y -= 2; // TODO check if correct
+        if(dir == DOWNp)
+        {
+            if(paddle[1].y > 0)
+                paddle[1].y -= 1;
+            else
+                paddle[1].y = 0;
         }
-        paddle[1].last_dir = UPp;
-    }
-    else if(dir == DOWNp && paddle[1].last_dir != DOWNp)
-    {
-        if(paddle[1].y >= DISPLAY_HEIGHT - paddle[1].h) {
-
-            paddle[1].y = DISPLAY_HEIGHT - paddle[1].h;
-
-        } else {
-
-            paddle[1].y += 2;
+        else if(dir == UPp)
+        {
+            if(paddle[1].y < DISPLAY_HEIGHT - paddle[1].h)
+                paddle[1].y += 1;
+            else
+                paddle[1].y = DISPLAY_HEIGHT - paddle[1].h;
         }
-        paddle[1].last_dir = DOWNp;
-    }
-    draw_paddle(1);
+
+        draw_paddle(1);
 
 }
 
@@ -563,9 +555,16 @@ bool pong() {
                     readJoystickPosition();
 
                     if(isButtonUpPressed())
+                    {
+
                         move_paddle_second_player(UPp);
-                    else if(isButtonDownPressed())
+                    }
+                    if(isButtonDownPressed())
+                    {
                         move_paddle_second_player(DOWNp);
+
+                    }
+
 
                     move_ball();
                     draw_paddle(1);
@@ -599,7 +598,8 @@ bool pong() {
             }
 
             // Wait until the player moves the joystick to the RIGHT to continue
-            while(1)
+            bool q= true;
+            while(q)
             {
                 readJoystickPosition();
                 if(gameState.joystickX > J_RIGHT_TRESH + EXTRA_THRESHOLD)
@@ -607,7 +607,8 @@ bool pong() {
                     // Debounce: consume the input and exit loop
                     gameState.joystickX = J_RIGHT_TRESH - 1;
                     delay_ms(200); // optional debounce delay
-                    break;
+                    q=false;
+                    P2->OUT |= BIT2;
                 }
                 delay_ms(20);
             }

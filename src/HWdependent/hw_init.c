@@ -8,6 +8,8 @@
 #include <ti/devices/msp432p4xx/driverlib/flash.h>
 #include <ti/grlib/grlib.h>
 
+#include <stdio.h>
+
 
 void HW_Init()
 {
@@ -59,27 +61,34 @@ void graphic_init()
 
 void init_button()
 {
-    // S1 init J4.33 -> P1.1
-    P1->SEL0 &= ~BIT1;
-    P1->SEL1 &= ~BIT1;
-    P1->DIR &= ~BIT1;
-    P1->OUT |= BIT1;
-    P1->REN |= BIT1;
-    P1->IFG &= ~BIT1;
-    P1->IES |= BIT1;
-    P1->IE &= ~BIT1;
+    // S1 init J4.33 -> P5.1
+    P5->SEL0 &= ~BIT1;
+    P5->SEL1 &= ~BIT1;
+    P5->DIR &= ~BIT1;
+    P5->OUT |= BIT1;
+    P5->REN |= BIT1;
 
-    // S2 init J4.32 -> P1.4
+    // S2 init J4.32 -> P3.5
 
-    P1->SEL0 &= ~BIT4;
-    P1->SEL1 &= ~BIT4;
-    P1->DIR &= ~BIT4;
-    P1->OUT |= BIT4;
-    P1->REN |= BIT4;
-    P4->IFG &= ~BIT4;
-    P4->IES |= BIT4;
-    P4->IE &= ~BIT4;
-    
+    P3->SEL0 &= ~BIT5;
+    P3->SEL1 &= ~BIT5;
+    P3->DIR &= ~BIT5;
+    P3->OUT |= BIT5;
+    P3->REN |= BIT5;
+
+
+    NVIC->ISER[1] = 1 << ((PORT5_IRQn) & 31);
+    NVIC->ISER[1] = 1 << ((PORT3_IRQn) & 31);
+
+    P2->SEL0 &= ~(BIT1 | BIT2);
+       P2->SEL1 &= ~(BIT1 | BIT2);
+
+       /* set Port 2.1 and 2.2 as output */
+       P2->DIR |= (BIT1 | BIT2);
+
+       /* clear the pins */
+       P2->OUT &= ~(BIT1 | BIT2);
+
 }
 
 void ADC_config()
@@ -154,9 +163,11 @@ void ADC_config()
 void ADC14_IRQHandler()
 {
     __disable_irq();
+
     if (ADC14->IFGR0 & ADC14_IFGR0_IFG1)
     {
         gameState.joystickY = ADC14->MEM[1];
+
     }
     if (ADC14->IFGR0 & ADC14_IFGR0_IFG2)
     {
@@ -166,3 +177,5 @@ void ADC14_IRQHandler()
 }
 
 // Here in the IRQ we check the variable
+
+

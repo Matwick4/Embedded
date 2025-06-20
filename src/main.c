@@ -6,6 +6,9 @@
 #include "src/state.h"
 #include "src/end_game.h"
 
+#include "HWdependent/joystick.h"
+#include "HWdependent/display.h"
+
 
 
 int main(void)
@@ -14,18 +17,20 @@ int main(void)
     gameState.joystickY = J_V_INITIAL;
     gameState.joystickX = J_H_INITIAL;
 
+
     HW_Init();
+
+    show_main_menu();
+    int winner_pong =0 ;
+    bool winner_snake = false;
     while(true)
     {
-        gameState.game_selected = 0;
-        show_main_menu();
-        int winner_pong;
-        bool winner_snake;
         switch(gameState.game_selected){
 
             case 0: 
                 winner_pong = pong();
-                show_end_game_screen(true,winner_pong);
+                P2->OUT &= ~BIT2;
+                gameState.game_selected = -1;
                 
             break;
 
@@ -35,7 +40,7 @@ int main(void)
             break;
 
             case -1:
-                //back to the main menu
+                show_main_menu();
             break;
 
             default:
@@ -43,7 +48,7 @@ int main(void)
                 winner_pong = -1;
             break;
         }
-        gotoLPM();
+      //  gotoLPM();
         
     }
 }

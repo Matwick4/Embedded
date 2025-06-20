@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include "HWdependent/joystick.h"
 #include "HWdependent/display.h"
-#include "HWdependent/display.h"
 
-const char *const game_opt[] = {"RIGHT to start"};
-const int lengthOptMenu = 1;
+
+const char *const game_opt[] = {"RIGHT to start","Test option2"};
+const int lengthOptMenu = 2;
 const int offsetOptMenu = 65;
 
 //variables to be certain that joystick is centered
@@ -47,6 +47,7 @@ void show_main_menu(){
         {
             readJoystickPosition();
 
+
             //joystick DOWN
             if(gameState.joystickY < J_DOWN_TRESH)
             {
@@ -80,14 +81,16 @@ void show_main_menu(){
                 gameState.game_selected = -1;
                 gameState.buttonClicked = true;
                 gameState.joystickX = J_LEFT_TRESH + 1;
+
                 int j;
                 for(j = 0; j < 400000; j++) {;}
+
             }
 
 
-            if(isButtonUpPressed()){
-                gameState.buttonClicked = true;
-            }
+         //   if(isButtonUpPressed()){
+         //       gameState.buttonClicked = true;
+         //   }
             show_title();
 
             if(selected_curr != prev_sel)
@@ -126,14 +129,26 @@ void show_title(){
 }
 
 void show_games_options(int s){
+    P2->OUT ^= BIT2;
     int yOffs = offsetOptMenu;
     int hwidth = DISPLAY_WIDTH/2;
     int k;
+    uint32_t prev_color = get_Foreground_Color();
+    const Graphics_Font *prev_font = get_Font();
+
+    set_Foreground_Color(GRAPHICS_COLOR_BLACK);
+
+
+
     for(k = 0;k<lengthOptMenu;k++)
     {
         draw_String_Centered(game_opt[k],hwidth,yOffs,false);
         yOffs+=s;
     }
+
+    set_Font(prev_font);
+    set_Foreground_Color(prev_color);
+
 }
 
 Graphics_Rectangle draw_selection_rectangle(const int sel, const int s)

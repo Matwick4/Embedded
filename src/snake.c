@@ -1,6 +1,7 @@
 #include "snake.h"
 #include "HWdependent/display.h"
 #include "HWdependent/joystick.h"
+#include "pause.h"
 #include "state.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,7 +28,7 @@ inline int chooseSnakeLength()
     r.yMax = 60;
 
     uint32_t prev_FgColor = get_Foreground_Color();
-
+    gameState.buttonClicked=false;
     int k = 0;
     bool redraw = true;
     while(!gameState.buttonClicked){
@@ -59,14 +60,17 @@ inline int chooseSnakeLength()
                 sprintf(s, "%3d",opt[sel]);
                 draw_String_Centered((int8_t *)s,DISPLAY_WIDTH/2,50,false);
             }
-           // if(isButtonUpPressed()){
-           //     gameState.buttonClicked = true;
-          //  }
+
+           }
+           
+        if(isJoystickButtonPressed()){
+                     gameState.buttonClicked = true;
         }
+
         redraw = false;
-        int i;
+
         for (i = 0; i<40000;i++){;} // wait
-        gameState.buttonClicked = false;
+
     }
     return (opt[sel]);
 
@@ -87,6 +91,7 @@ bool snake()
     int segmY[MAX_SNAKE_LENGTH];
     int segmX[MAX_SNAKE_LENGTH];
 
+    Graphics_Rectangle apple;
     int Xapple = -1;
     int Yapple = -1;
 
@@ -102,10 +107,10 @@ bool snake()
     uint32_t prev_fg = get_Foreground_Color();
 
     while(!won && alive){
-        
+
         b++;
-        if(gameState.buttonClicked){
-            //Pause 
+        if(!isButtonDownPressed()){
+            gameState.buttonUpPressed=false;
             pause();
             resumed = true;
             
@@ -204,19 +209,19 @@ bool snake()
                 }
 
                 //Create the apple, else look for collision
-                Graphics_Rectangle apple = get_Rectangle(Xapple,Yapple);
+
                 if (Xapple == -1 || resumed)
                 {
                     if(Xapple == -1){
                             
-                            bool valid;
+                            bool valid = false;
                             do
                             {
-                                valid = true;
+
                                 //New apple position
                                 Xapple = rand() % (DISPLAY_WIDTH - 4) + 2;
                                 Yapple = rand() % (DISPLAY_HEIGHT - 4) + 2;
-                                Graphics_Rectangle apple = get_Rectangle(Xapple, Yapple);
+                                apple = get_Rectangle(Xapple, Yapple);
 
                                 //Check for overlap
                                 int j;
@@ -231,6 +236,7 @@ bool snake()
                                         break;
                                     }
                                 }
+                                valid = true;
                             }while (!valid);
                     }
                     set_Foreground_Color(GRAPHICS_COLOR_GREEN);
@@ -241,9 +247,7 @@ bool snake()
                 if(overlaps){
                     //Apple is eaten
                     Xapple = -1;
-                    uint32_t bc = get_Background_Color();
-                    set_Foreground_Color_Translated(bc);
-                    fill_Rectangle(&apple);
+                    clean_rect(&apple);
 
                     set_Background_Color_Translated(prev_fg);
                     fill_Rectangle(&head);

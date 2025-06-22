@@ -1,4 +1,5 @@
 #include "pong.h"
+#include "buzzer.h"
 #include "state.h"
 #include "end_game.h"
 #include "menu.h"
@@ -63,7 +64,7 @@ static void init()
 
 //================================================================================
 //==========TIMER SECTION=========================================================
-//================================================================================
+//===============================================================================8=
 void delay_ms(int ms) {
     int i, j;
     for(i = 0; i < ms; i++)
@@ -276,6 +277,7 @@ static void move_ball()
         //Collision!
         if(collision_check(ball,paddle[k]) == 1)
         {
+            beep();
             change_ball_vector(k);
         }
     }
@@ -440,7 +442,7 @@ static void draw_pong_menu()
         draw_pong_options(step);
 
         //joystick RIGHT (SELECT)
-        if(gameState.joystickX > J_RIGHT_TRESH + 1000 )
+        if(gameState.joystickX > J_RIGHT_TRESH )
         {
             gameState.buttonClicked = true;
             int j;

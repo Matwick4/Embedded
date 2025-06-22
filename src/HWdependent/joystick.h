@@ -2,6 +2,7 @@
 #define _JOYSTICK_H_
 
 void readJoystickPosition();
+bool isJoystickButtonPressed();
 bool isButtonUpPressed();
 bool isButtonDownPressed();
 

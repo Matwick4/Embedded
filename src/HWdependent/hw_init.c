@@ -34,9 +34,10 @@ void HW_Init()
     CS_initClockSignal(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_1);
     CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
 
-    //buzzerInit();
+    buzzerInit();
     graphic_init();
     init_button();
+
     //_lightSensorInit();
     __enable_irq();
 }
@@ -90,7 +91,13 @@ void init_button()
        P2->OUT &= ~(BIT1 | BIT2);
 
 }
+void buzzerInit()
+{
+        GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P2, GPIO_PIN7,GPIO_PRIMARY_MODULE_FUNCTION);
 
+
+
+}
 void ADC_config()
 {
     
@@ -115,6 +122,14 @@ void ADC_config()
     P6->IFG &= ~BIT0;
     P6->IES |= BIT0;
     P6->IE &= ~BIT0;
+
+    //J1.5
+    //Pin 4.1 joystick button
+    P4->SEL0 &= ~BIT1;
+    P4->SEL1 &= ~BIT1;
+    P4->DIR &= ~BIT1;
+    P4->OUT |= BIT1;
+    P4->REN |= BIT1;
 
     //configure adc
     ADC14->CTL0 &= ~ADC14_CTL0_ENC; //disable conversions

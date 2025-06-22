@@ -5,6 +5,7 @@
 void HW_Init();
 void graphic_init();
 void init_button();
+void buzzer_init();
 void ADC_config();
 
 #endif

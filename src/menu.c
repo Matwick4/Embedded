@@ -5,7 +5,7 @@
 #include "HWdependent/display.h"
 
 
-const char *const game_opt[] = {"RIGHT to start","Test option2"};
+const char *const game_opt[] = {"PONG","SNAKE"};
 const int lengthOptMenu = 2;
 const int offsetOptMenu = 65;
 
@@ -67,7 +67,7 @@ void show_main_menu(){
             }
 
             //joystick RIGHT (SELECT)
-            if(gameState.joystickX > J_RIGHT_TRESH + JOYSTICK_THRESHOLD)
+            if(gameState.joystickX > J_RIGHT_TRESH)
             {
                 gameState.buttonClicked = true;
                 gameState.joystickX = J_RIGHT_TRESH - 1;

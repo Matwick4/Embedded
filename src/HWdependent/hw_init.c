@@ -93,9 +93,21 @@ void init_button()
 }
 void buzzerInit()
 {
-        GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P2, GPIO_PIN7,GPIO_PRIMARY_MODULE_FUNCTION);
 
 
+        TIMER_A1->CTL = TIMER_A_CTL_SSEL__ACLK;
+                /* set the operation mode of the timer */
+               //
+                /* use a prescaler to divide the clock by 32 */
+                TIMER_A1->CTL |=   TIMER_A_CTL_ID__8;
+                TIMER_A1->EX0 |=  TIMER_A_EX0_IDEX__4;
+
+                TIMER_A1->CTL |= TIMER_A_CTL_IE;
+
+                TIMER_A1->CCTL[0] |=TIMER_A_CCTLN_CCIE; // enable interrupt
+                GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P2, GPIO_PIN7,GPIO_PRIMARY_MODULE_FUNCTION);
+                /* enable IRQ 9 line for the timer interrupts to catch overflow */
+                NVIC->ISER[0] = 1 << ((TA1_0_IRQn) & 31);
 
 }
 void ADC_config()
@@ -192,5 +204,15 @@ void ADC14_IRQHandler()
 }
 
 // Here in the IRQ we check the variable
+
+void TA1_0_IRQHandler(){
+
+                TIMER_A1->CCTL[0] &= ~TIMER_A_CCTLN_CCIFG ;
+                TIMER_A1->CTL &= ~TIMER_A_CTL_MC_3;
+                TIMER_A0->CTL &= ~TIMER_A_CTL_MC_3;
+                TIMER_A1->R=0;
+
+                __low_power_mode_off_on_exit();
+    }
 
 

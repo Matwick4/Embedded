@@ -277,7 +277,7 @@ static void move_ball()
         //Collision!
         if(collision_check(ball,paddle[k]) == 1)
         {
-            beep();
+            beep(20,40);
             change_ball_vector(k);
         }
     }
@@ -597,6 +597,7 @@ bool pong() {
             } else {
                 // Multiplayer mode
                 show_end_game_screen(true, winner);
+                playWeAreTheChampion();
             }
 
             // Wait until the player moves the joystick to the RIGHT to continue

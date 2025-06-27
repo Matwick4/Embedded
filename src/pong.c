@@ -604,13 +604,12 @@ bool pong() {
             while(q)
             {
                 readJoystickPosition();
-                if(gameState.joystickX > J_RIGHT_TRESH + EXTRA_THRESHOLD)
+                if(gameState.joystickX > J_RIGHT_TRESH)
                 {
                     // Debounce: consume the input and exit loop
                     gameState.joystickX = J_RIGHT_TRESH - 1;
                     delay_ms(200); // optional debounce delay
                     q=false;
-                    P2->OUT |= BIT2;
                 }
                 delay_ms(20);
             }

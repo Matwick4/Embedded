@@ -5,8 +5,8 @@
 #include "HWdependent/display.h"
 
 
-const char *const game_opt[] = {"PONG","SNAKE"};
-const int lengthOptMenu = 2;
+const char *const game_opt[] = {"RIGHT to start"};
+const int lengthOptMenu = 1;
 const int offsetOptMenu = 65;
 
 //variables to be certain that joystick is centered

@@ -81,7 +81,7 @@ void init_button()
     NVIC->ISER[1] = 1 << ((PORT5_IRQn) & 31);
     NVIC->ISER[1] = 1 << ((PORT3_IRQn) & 31);
 
-    P2->SEL0 &= ~(BIT1 | BIT2);
+        P2->SEL0 &= ~(BIT1 | BIT2);
        P2->SEL1 &= ~(BIT1 | BIT2);
 
        /* set Port 2.1 and 2.2 as output */

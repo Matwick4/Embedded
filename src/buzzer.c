@@ -4,12 +4,6 @@
 #include <ti/devices/msp432p4xx/driverlib/flash.h>
 #include <ti/grlib/grlib.h>
 
-
-
-
-
-
-
 void beep()
 {
            Timer_A_generatePWM(TIMER_A0_BASE,&testPWM);

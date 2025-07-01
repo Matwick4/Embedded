@@ -3,10 +3,6 @@
 
 <h2>📋 TO-DO LIST (segnalate qui eventuali problemi o cose da fare)</h2>
 <ol>
-  <li>Aggiungere i movimenti del player 2 con i pulsanti; bisogna capire da che libreria si prendono le funzioni per far funzionare i 2 pulsanti destri della scheda</li>
-  <li>Fare in modo che dalla schermata di fine facendo RIGHT con il joystick si possa tornare al menu di partenza</li>
-  <li>Trovare le librerie per far funzionare Buzzer e Led RGB e, se esistono, importarle nel progetto e capire come funzioano</li>
-  <li>Aggiungere Buzzer (quando la pallina rimbalaza o il giocatore segna punto parte un suono)</li>
   <li>Aggiungere LED RGB (nel menu led arcobaleno che cicla i colori, nel gioco si colora di rosso se segna player left, di rosso se segna player right)</li>
 </ol>
 <br>

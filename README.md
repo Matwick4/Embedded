@@ -71,7 +71,7 @@ This section describes the folder and file structure of the project.
 │   └── org.eclipse.core.resources.prefs
 ├── .vscode
 │   └── c_cpp_properties.json
-├── LcdDrivers
+├── LcdDrivers		# Libraries for the LCD display
 │   ├── Crystalfontz128x128_ST7735.c
 │   ├── Crystalfontz128x128_ST7735.h
 │   ├── HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.c
@@ -84,7 +84,7 @@ This section describes the folder and file structure of the project.
 │   ├── booster_pack.png
 │   └── game_state_machine.png
 ├── src
-│   ├── HWdependent        # Files for hardware components
+│   ├── HWdependent	# Files for hardware components
 │   │   ├── display.c
 │   │   ├── display.h
 │   │   ├── hw_init.c
@@ -93,17 +93,17 @@ This section describes the folder and file structure of the project.
 │   │   ├── joystick.h
 │   │   ├── pcm.c
 │   │   └── pcm.h
-│   ├── buzzer.c          # Plays music
+│   ├── buzzer.c	# Plays music
 │   ├── buzzer.h
-│   ├── end_game.c        # End game screen
+│   ├── end_game.c	# End game screen
 │   ├── end_game.h
-│   ├── main.c            # Entry point
+│   ├── main.c		# Entry point
 │   ├── main.h
-│   ├── menu.c            # Game mode selection
+│   ├── menu.c		# Game mode selection
 │   ├── menu.h
-│   ├── pause.c           # Pause screen logic
+│   ├── pause.c
 │   ├── pause.h
-│   ├── pong.c            # Game state machine
+│   ├── pong.c		# Game state machine
 │   └── pong.h
 ├── targetConfigs
 │   ├── MSP432P401R.ccxml
@@ -112,7 +112,7 @@ This section describes the folder and file structure of the project.
 ├── .cproject
 ├── .gitignore
 ├── .project
-├── README.md            # README of the repository
+├── README.md		# README of the project
 └── msp432p401r.cmd
 </pre>
 <br>
@@ -125,7 +125,7 @@ This section describes the folder and file structure of the project.
 The image below provides a simplified high-level overview of the state machine that drives the game logic, implemented in the <code>pong.c</code> file.<br>
 While the actual implementation includes more details and transitions, this diagram captures the core states and flow of the gameplay, offering a clear perspective on how the program manages different phases of the game.
 <div align="center">
-  <img src="images/game_state_machine.png" alt="Game state machine diagram" width="600"/>
+  <img src="images/game_state_machine.png" alt="Game state machine diagram" width="800"/>
 </div>
 <br><br>
 

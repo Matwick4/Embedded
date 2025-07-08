@@ -113,9 +113,12 @@ This section describes the folder and file structure of the project.
 </pre>
 <br>
 
-<h2>How to Make the Project Work</h2>
+<h2> How to Make the Project Work </h2>
 <!-- Qui va completata la sezione con istruzioni passo passo su come importare, compilare e caricare il progetto in CCS -->
-Explain how to import the project into Code Composer Studio, how to resolve any dependencies, and how to compile and upload the firmware to the board.
+<br><br>
+
+<h2> Game Logic </h2>
+<!-- Qui va inserito il diagramma a blocchi che spiega gli stati del gioco, da fare su draw.io-->
 <br><br>
 
 <h2>Team Members</h2>

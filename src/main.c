@@ -1,4 +1,3 @@
-#include "src/snake.h"
 #include "src/pong.h"
 #include "src/HWdependent/pcm.h"
 #include "src/HWdependent/hw_init.h"
@@ -22,7 +21,6 @@ int main(void)
 
     show_main_menu();
     int winner_pong =0 ;
-    bool winner_snake = false;
     while(true)
     {
         switch(gameState.game_selected){
@@ -33,17 +31,11 @@ int main(void)
                 
             break;
 
-            case 1:
-                winner_snake = snake();
-                show_end_game_screen(winner_snake,-1);
-            break;
-
             case -1:
                 show_main_menu();
             break;
 
             default:
-                winner_snake = false;
                 winner_pong = -1;
             break;
         }

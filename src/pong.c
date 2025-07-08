@@ -249,19 +249,23 @@ static void move_ball()
         score[1] +=1;       // update score
         clear_Display();    //clear display
         draw_score();       //show score
+        P2->OUT ^= BIT1;    // LED GREEN
         delay_ms(1000);     //wait 1s
+        P2->OUT ^= BIT1;    // turn off LED
         clear_Display();    //clear display
         init();             //init the game
     }
 
     else if(ball.x > DISPLAY_WIDTH-10)
     {
-        score[0] +=1;
-        clear_Display();
-        draw_score();
-        delay_ms(1000);
-        clear_Display();
-        init();;
+        score[0] +=1;       // update score
+        clear_Display();    //clear display
+        draw_score();       //show score
+        P2->OUT ^= BIT2;    // LED BLUE
+        delay_ms(1000);     //wait 1s
+        P2->OUT ^= BIT2;    // turn off LED
+        clear_Display();    //clear display
+        init();             //init the game
     }
 
     //Check for collision with screen edge on y axis and make it "bounce"
@@ -285,7 +289,7 @@ static void move_ball()
 
 //==========BALL DIRECTION (normalized speed) ===============================
 static void change_ball_vector(int k){
-    // Always move horizontally at dx = ±1
+    // Always move horizontally at dx = Â±1
     ball.dx = (ball.dx > 0) ? -1 : 1;
 
     // Calculate where the ball hit the paddle
@@ -594,6 +598,7 @@ bool pong() {
             if(AI) {
                 // Single player mode: 1 = player won, 2 = CPU won
                 show_end_game_screen(winner == 1, -1); // -1 means single player mode
+                playWeAreTheChampion();
             } else {
                 // Multiplayer mode
                 show_end_game_screen(true, winner);

@@ -6,8 +6,8 @@
 #include "src/state.h"
 #include "src/end_game.h"
 
-#include "HWdependent/joystick.h"
-#include "HWdependent/display.h"
+#include "src/HWdependent/joystick.h"
+#include "src/HWdependent/display.h"
 
 
 
@@ -33,7 +33,7 @@ int main(void)
                 
             break;
 
-            case 1: 
+            case 1:
                 winner_snake = snake();
                 show_end_game_screen(winner_snake,-1);
             break;

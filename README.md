@@ -52,8 +52,11 @@ Hardware-dependent code is isolated in its own folder so that porting to other p
 <h2>Tools Used</h2>
 Code Composer Studio has been used for developing, uploading the software to the platform, and debugging.<br>
 Specifically, we used <b>Code Composer Studio version 12.7.0</b> to ensure full compatibility with the MSP432P401R board and the libraries provided in the MSP432 SDK.<br>
-While other versions of CCS might also work, we recommend using <b>version 12.7.0</b> to avoid potential compatibility issues with the hardware or software dependencies adopted in this project.
+While other versions of CCS might also work, we recommend using <b>version 12.7.0</b> to avoid potential compatibility issues with the hardware or software dependencies adopted in this project.<br>
+You can download this specific version directly from the official Texas Instruments website:<br>
+<a href="https://www.ti.com/tool/download/CCSTUDIO/12.7.0" target="_blank">Download Code Composer Studio 12.7.0</a>
 <br><br>
+
 
 <h2>Project Layout</h2>
 This section describes the folder and file structure of the project.
@@ -105,7 +108,7 @@ This section describes the folder and file structure of the project.
 ├── .cproject
 ├── .gitignore
 ├── .project
-├── README.md
+├── README.md            # README of the repository
 └── msp432p401r.cmd
 </pre>
 <br>

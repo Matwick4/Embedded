@@ -81,7 +81,8 @@ This section describes the folder and file structure of the project.
 │   └── system_msp432p401r.c
 ├── images
 │   ├── MSP432P401R.png
-│   └── booster_pack.png
+│   ├── booster_pack.png
+│   └── game_state_machine.png
 ├── src
 │   ├── HWdependent        # Files for hardware components
 │   │   ├── display.c
@@ -121,7 +122,12 @@ This section describes the folder and file structure of the project.
 <br><br>
 
 <h2> Game Logic </h2>
-<!-- Qui va inserito il diagramma a blocchi che spiega gli stati del gioco, da fare su draw.io-->
+<div align="center">
+  <img src="images/game_state_machine.png" alt="Game state machine diagram" width="600"/>
+  <br>
+  <b>Figure: State machine of the game logic</b>
+</div>
+
 <br><br>
 
 <h2>Team Members</h2>

@@ -73,7 +73,7 @@ This section describes the folder and file structure of the project.
 ├── ccs
 │   ├── startup_msp432p401r_ccs.c
 │   └── system_msp432p401r.c
-├── images
+├── images		# Images for the README
 │   ├── MSP432P401R.png
 │   ├── booster_pack.png
 │   └── game_state_machine.png
@@ -96,7 +96,8 @@ This section describes the folder and file structure of the project.
 │   ├── menu.c		# Game mode selection
 │   ├── menu.h
 │   ├── pong.c		# Game state machine
-│   └── pong.h
+│   ├── pong.h
+│   └── state.h
 ├── targetConfigs
 │   ├── MSP432P401R.ccxml
 │   └── readme.txt
@@ -106,8 +107,18 @@ This section describes the folder and file structure of the project.
 <br>
 
 <h2> How to Make the Project Work </h2>
-<!-- Qui va completata la sezione con istruzioni passo passo su come importare, compilare e caricare il progetto in CCS -->
+To run the project on the MSP432P401R board, follow these steps:
+- Open **Code Composer Studio**.
+- Click on **New CCS Project**.
+- In the target configuration, select **MSP432P401R** as the device.
+- Choose a project name and leave all default settings unchanged.
+- Once the project is created, download the `src` folder from this GitHub repository and import all the files into your CCS project.
+- Move the `main.c` file outside of the `src` folder (into the root of the CCS project).
+- Build the project.
+- Start a debug session to upload and run the code on the board.
 <br><br>
+
+
 
 <h2> Game Logic </h2>
 The image below provides a simplified high-level overview of the state machine that drives the game logic, implemented in the <code>pong.c</code> file.<br>

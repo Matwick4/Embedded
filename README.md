@@ -122,12 +122,11 @@ This section describes the folder and file structure of the project.
 <br><br>
 
 <h2> Game Logic </h2>
+The image below provides a simplified high-level overview of the state machine that drives the game logic, implemented in the <code>pong.c</code> file.<br>
+While the actual implementation includes more details and transitions, this diagram captures the core states and flow of the gameplay, offering a clear perspective on how the program manages different phases of the game.
 <div align="center">
   <img src="images/game_state_machine.png" alt="Game state machine diagram" width="600"/>
-  <br>
-  <b>Figure: State machine of the game logic</b>
 </div>
-
 <br><br>
 
 <h2>Team Members</h2>

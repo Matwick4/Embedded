@@ -129,7 +129,6 @@ void show_title(){
 }
 
 void show_games_options(int s){
-    P2->OUT ^= BIT2;
     int yOffs = offsetOptMenu;
     int hwidth = DISPLAY_WIDTH/2;
     int k;

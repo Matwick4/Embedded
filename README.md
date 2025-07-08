@@ -65,18 +65,12 @@ You can download this specific version directly from the official Texas Instrume
 This section describes the folder and file structure of the project.
 <pre>
 .
-├── .settings
-│   ├── org.eclipse.cdt.codan.core.prefs
-│   ├── org.eclipse.cdt.debug.core.prefs
-│   └── org.eclipse.core.resources.prefs
-├── .vscode
-│   └── c_cpp_properties.json
 ├── LcdDrivers		# Libraries for the LCD display
 │   ├── Crystalfontz128x128_ST7735.c
 │   ├── Crystalfontz128x128_ST7735.h
 │   ├── HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.c
 │   └── HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.h
-├── css
+├── ccs
 │   ├── startup_msp432p401r_ccs.c
 │   └── system_msp432p401r.c
 ├── images
@@ -101,19 +95,13 @@ This section describes the folder and file structure of the project.
 │   ├── main.h
 │   ├── menu.c		# Game mode selection
 │   ├── menu.h
-│   ├── pause.c
-│   ├── pause.h
 │   ├── pong.c		# Game state machine
 │   └── pong.h
 ├── targetConfigs
 │   ├── MSP432P401R.ccxml
 │   └── readme.txt
-├── .cssproject
-├── .cproject
 ├── .gitignore
-├── .project
-├── README.md		# README of the project
-└── msp432p401r.cmd
+└── README.md		# README of the project
 </pre>
 <br>
 

@@ -3,8 +3,8 @@
 <h2>What is this repository?</h2>
 This repository contains the final project for the course <em>Embedded Software for the Internet of Things</em>, held at the University of Trento by Professor Kasim Sinan Yildirim during the academic year 2024/2025.
 
-- <a href="https://www.google.com/" target="_blank">Presentation</a>
-- <a href="https://www.google.com/" target="_blank">Video</a>
+- <a href="https://drive.google.com/file/d/1J4VXcWjR3kiCUgQ_xhUsU-F4c6Rifm-4/view?usp=sharing" target="_blank">Presentation</a>
+- <a href="https://drive.google.com/file/d/16_kKBcAPMfE5_3rjdqC2V3HupA2KNZmW/view?usp=sharing" target="_blank">Video</a>
 <br><br>
 
 <h2>What is this project about?</h2>

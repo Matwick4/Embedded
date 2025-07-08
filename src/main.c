@@ -29,7 +29,6 @@ int main(void)
 
             case 0: 
                 winner_pong = pong();
-                P2->OUT &= ~BIT2;
                 gameState.game_selected = -1;
                 
             break;

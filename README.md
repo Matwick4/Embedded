@@ -108,14 +108,16 @@ This section describes the folder and file structure of the project.
 
 <h2> How to Make the Project Work </h2>
 To run the project on the MSP432P401R board, follow these steps:
-- Open **Code Composer Studio**.
-- Click on **New CCS Project**.
-- In the target configuration, select **MSP432P401R** as the device.
-- Choose a project name and leave all default settings unchanged.
-- Once the project is created, download the `src` folder from this GitHub repository and import all the files into your CCS project.
-- Move the `main.c` file outside of the `src` folder (into the root of the CCS project).
-- Build the project.
-- Start a debug session to upload and run the code on the board.
+
+1. Open **Code Composer Studio**.
+2. Click on **New CCS Project**.
+3. In the target configuration, select **MSP432P401R** as the device.
+4. Choose a project name and leave all default settings unchanged.
+5. Once the project is created, download the src folder from this GitHub repository and import all the files into your CCS project.
+6. Move the main.c file outside of the src folder (into the root of the CCS project).
+7. Build the project.
+8. Start a debug session to upload and run the code on the board.
+
 <br><br>
 
 
